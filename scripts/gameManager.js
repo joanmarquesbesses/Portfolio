@@ -1,7 +1,8 @@
-import { Ninja } from "./Ninja.js";
+import { Ninja } from "./ninja.js";
 import { Home } from "./sections/Home.js";
 import { Games } from "./sections/Games.js";
 import { Contact } from "./sections/Contact.js";
+import { ColliderManager } from "./colliderManager.js";
 
 export class GameManager {
   constructor(canvas, ctx) {
@@ -17,14 +18,15 @@ export class GameManager {
 
     this.currentSection = this.sections.home;
     this.showSection(this.currentSection.id);
+    this.currentSection.onEnter();
   }
 
   start() {
-    this.loop();
+    requestAnimationFrame(this.loop(0));
   }
 
-  update() {
-  this.ninja.update();
+  update(deltaTime) {
+  this.ninja.update(deltaTime);
 
   // Detectar bordes y cambiar de sección
   if (this.ninja.x + 40 > this.canvas.width) {
@@ -39,10 +41,17 @@ export class GameManager {
     this.ninja.draw(this.ctx);
   }
 
-  loop() {
-    this.update();
+  loop(lastTime = 0) {
+    return (timestamp) => {
+    const deltaTime = (timestamp - lastTime) / 1000; // en segundos
+    lastTime = timestamp;
+
+    this.update(deltaTime);
     this.draw();
-    requestAnimationFrame(() => this.loop());
+    ColliderManager.draw(this.ctx);
+
+    requestAnimationFrame(this.loop(lastTime));
+    };
   }
 
   changeSection(targetId, direction = null) {

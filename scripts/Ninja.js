@@ -1,4 +1,5 @@
 import { Animation } from "./Animation.js";
+import { ColliderManager } from "./colliderManager.js";
 
 export class Ninja {
   constructor(canvas) {
@@ -10,6 +11,7 @@ export class Ninja {
     this.velY = 0;
     this.onGround = true;
     this.flipX = false;
+    this.speed = 400;
 
     this.sprite = new Image();
     this.sprite.src = "./assets/ninja-pixilart.png";
@@ -40,24 +42,45 @@ export class Ninja {
     };
   }
 
-  update() {
-    if (!this.ready) return;
+  update(deltaTime) {
+     if (!this.ready) return;
+
+    let newX = this.x, newY = this.y;
 
     if (this.keys["KeyA"]) {
-      this.x -= 4;
+      newX -= this.speed * deltaTime;
       this.currentAnim = this.walkAnim;
       this.flipX = true;
     } else if (this.keys["KeyD"]) {
-      this.x += 4;
+      newX += this.speed * deltaTime;
       this.currentAnim = this.walkAnim;
       this.flipX = false;
     } else {
       this.currentAnim = this.idleAnim;
     }
 
+    // comprobar colisión antes de mover
+    if (!ColliderManager.checkCollision(newX, newY, 25 * 2, 32 * 2)) {
+      this.x = newX;
+      this.y = newY;
+    }
+
+    if (this.keys["Space"] && this.onGround) {
+      this.velY = -400 * deltaTime; // fuerza del salto
+      this.onGround = false;
+    }
+
     // gravedad
     this.y += this.velY;
-    this.velY += 0.6;
+    this.velY += 4 * deltaTime;
+    // comprobar colisión vertical
+    const hit = ColliderManager.checkCollision(this.x, this.y, 25 * 2, 32 * 2);
+    if (hit) {
+      // ninja se coloca justo encima del collider
+      this.y = hit.y - 32 * 2;
+      this.velY = 0;
+      this.onGround = true;
+    }
     if (this.y >= this.canvas.height - 150) {
       this.y = this.canvas.height - 150;
       this.velY = 0;
