@@ -1,7 +1,7 @@
-import { Ninja } from "./ninja.js";
 import { Home } from "./sections/Home.js";
 import { Games } from "./sections/Games.js";
 import { Contact } from "./sections/Contact.js";
+import { Ninja } from "./ninja.js";
 import { ColliderManager } from "./colliderManager.js";
 
 export class GameManager {
