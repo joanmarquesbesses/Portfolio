@@ -66,13 +66,13 @@ export class Ninja {
     }
 
     if (this.keys["Space"] && this.onGround) {
-      this.velY = -400 * deltaTime; // fuerza del salto
+      this.velY = -800 * deltaTime; // fuerza del salto
       this.onGround = false;
     }
 
     // gravedad
     this.y += this.velY;
-    this.velY += 4 * deltaTime;
+    this.velY += 9.8 * deltaTime;
     // comprobar colisión vertical
     const hit = ColliderManager.checkCollision(this.x, this.y, 25 * 2, 32 * 2);
     if (hit) {
