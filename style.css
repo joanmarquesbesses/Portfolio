@@ -86,3 +86,28 @@ section {
   height: 100%;
   overflow-x: hidden; /* 🔹 quita el scroll horizontal */
 }
+
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background: linear-gradient(270deg, #1e3c72, #2a5298, #ff6a00, #ee0979);
+  background-size: 800% 800%;
+  animation: gradientShift 15s ease infinite;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.5); /* oscurece para que se lea el texto */
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+@keyframes gradientShift {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
