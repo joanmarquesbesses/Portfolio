@@ -9,10 +9,10 @@ export class Animation {
     this.tick = 0;
   }
 
-  update() {
-    this.tick++;
+  update(deltaTime) {
+    this.tick += deltaTime;
     if (this.tick >= this.frameSpeed) {
-      this.tick = 0;
+      this.tick -= this.frameSpeed;
       this.currentFrame = (this.currentFrame + 1) % this.frames.length;
     }
   }

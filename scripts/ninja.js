@@ -1,4 +1,5 @@
 import { Animation } from "./Animation.js";
+import { Collider } from "./collider.js";
 import { ColliderManager } from "./colliderManager.js";
 
 export class Ninja {
@@ -8,10 +9,16 @@ export class Ninja {
     this.keys = {};
     this.x = 100;
     this.y = canvas.height - 150;
+
+    this.velX = 0;
     this.velY = 0;
+
     this.onGround = true;
     this.flipX = false;
-    this.speed = 400;
+
+    this.speed = 200; // pixels por segundo
+    this.jumpForce = -800; // fuerza del salto
+    this.gravity = 1000; // gravedad
 
     this.sprite = new Image();
     this.sprite.src = "./assets/ninja-pixilart.png";
@@ -29,15 +36,22 @@ export class Ninja {
         {x:0, y:0, w:24, h:32},
         {x:27, y:0, w:25, h:32},
         {x:55, y:0, w:25, h:32},
-      ], 10, 2);
+      ], 0.25, 2);
 
       this.walkAnim = new Animation(this.sprite, [
         {x:0, y:37, w:26, h:29},
         {x:29, y:37, w:27, h:29},
         {x:59, y:37, w:27, h:29}
-      ], 8, 2);
+      ], 0.12, 2);
 
       this.currentAnim = this.idleAnim;
+
+      this.width = 25 * this.idleAnim.scale;
+      this.height = 32 * this.idleAnim.scale;
+      this.collider = new Collider(this.x, this.y, this.width, this.height, "player");
+
+      ColliderManager.addCollider(this.collider);
+
       this.ready = true;
     };
   }
@@ -45,8 +59,10 @@ export class Ninja {
   update(deltaTime) {
      if (!this.ready) return;
 
-    let newX = this.x, newY = this.y;
+    let newX = this.collider.x;
+    let newY = this.collider.y;
 
+    //movimiento horizontal
     if (this.keys["KeyA"]) {
       newX -= this.speed * deltaTime;
       this.currentAnim = this.walkAnim;
@@ -59,35 +75,52 @@ export class Ninja {
       this.currentAnim = this.idleAnim;
     }
 
-    // comprobar colisión antes de mover
-    if (!ColliderManager.checkCollision(newX, newY, 25 * 2, 32 * 2)) {
-      this.x = newX;
-      this.y = newY;
-    }
-
+    //salto
     if (this.keys["Space"] && this.onGround) {
-      this.velY = -800 * deltaTime; // fuerza del salto
+      this.velY = this.jumpForce; 
       this.onGround = false;
     }
 
-    // gravedad
-    this.y += this.velY;
-    this.velY += 10 * deltaTime;
-    // comprobar colisión vertical
-    const hit = ColliderManager.checkCollision(this.x, this.y, 25 * 2, 32 * 2);
-    if (hit) {
-      // ninja se coloca justo encima del collider
-      this.y = hit.y - 32 * 2;
-      this.velY = 0;
-      this.onGround = true;
-    }
-    if (this.y >= this.canvas.height - 150) {
-      this.y = this.canvas.height - 150;
-      this.velY = 0;
-      this.onGround = true;
+    //gravedad
+    this.velY += this.gravity * deltaTime;
+    newY = this.collider.y + (this.velY * deltaTime);
+
+    //suelo
+   const floorY = this.canvas.height - this.height;
+   if (newY >= floorY) {
+    newY = floorY;
+    this.velY = 0;
+    this.onGround = true;
+   }
+
+    // comprobar colisión horizontal
+    if (!ColliderManager.checkCollision(newX, this.collider.y, this.width, this.height, this.collider)) {
+      this.collider.x = newX;
     }
 
-    this.currentAnim.update();
+    // comprobar colisión vertical
+    const vHit = ColliderManager.checkCollision(this.collider.x, newY, this.width, this.height, this.collider);
+    if (!vHit) {
+      this.collider.y = newY;
+      // probe de 1px para saber si estamos apoyados
+      const probe = ColliderManager.checkCollision(this.collider.x, this.collider.y + 1, this.width, this.height, this.collider);
+      this.onGround = !!probe || this.collider.y >= floorY - 0.5;
+    } else {
+      if (this.velY > 0) {               // cayendo -> suelo
+        this.collider.y = vHit.y - this.height - 0.01;
+        this.velY = 0;
+        this.onGround = true;
+      } else if (this.velY < 0) {        // subiendo -> techo
+        this.collider.y = vHit.y + vHit.h + 0.01;
+        this.velY = 0;
+      }
+    }
+    // sincronizar para dibujar
+    this.x = this.collider.x;
+    this.y = this.collider.y;
+
+    this.currentAnim.update(deltaTime);
+    console.log("velY:", this.velY, "onGround:", this.onGround, "newY:", newY);
   }
 
   draw(ctx) {

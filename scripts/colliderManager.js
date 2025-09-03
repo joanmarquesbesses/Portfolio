@@ -2,23 +2,23 @@ export class ColliderManager {
   static colliders = [];
   static debug = false;
 
-  static addColliders(list) {
-    this.colliders.push(...list);
-  }
-
   static addCollider(collider) {
     this.colliders.push(collider);
+  }
+
+  static addColliders(list) {
+    this.colliders.push(...list);
   }
 
   static removeCollider(collider) {
     this.colliders = this.colliders.filter(c => c !== collider);
   }
 
-  static checkCollision(x, y, w, h) {
+  // ✅ Ignora un collider concreto (por referencia)
+  static checkCollision(x, y, w, h, ignoreCollider = null) {
     for (let c of this.colliders) {
-      if (c.intersects(x, y, w, h)) {
-        return c; // 🔹 devolvemos el collider
-      }
+      if (ignoreCollider && c === ignoreCollider) continue;   // 👈 clave
+      if (c.intersects(x, y, w, h)) return c;
     }
     return null;
   }

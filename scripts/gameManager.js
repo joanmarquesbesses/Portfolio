@@ -10,6 +10,8 @@ export class GameManager {
     this.ctx = ctx;
     this.ninja = new Ninja(canvas);
 
+    this.lastTime = 0;
+
     this.sections = {
       home: new Home(),
       games: new Games(),
@@ -22,18 +24,18 @@ export class GameManager {
   }
 
   start() {
-    requestAnimationFrame(this.loop(0));
+    requestAnimationFrame(this.loop.bind(this));
   }
 
   update(deltaTime) {
-  this.ninja.update(deltaTime);
+    this.ninja.update(deltaTime);
 
-  // Detectar bordes y cambiar de sección
-  if (this.ninja.x + 40 > this.canvas.width) {
-    this.changeSection("games", "right");
-  } else if (this.ninja.x < 0) {
-    this.changeSection("home", "left");
-  }
+    // Detectar bordes y cambiar de sección
+    if (this.ninja.x + 40 > this.canvas.width) {
+      this.changeSection("games", "right");
+    } else if (this.ninja.x < 0) {
+      this.changeSection("home", "left");
+    }
 }
 
   draw() {
@@ -41,17 +43,15 @@ export class GameManager {
     this.ninja.draw(this.ctx);
   }
 
-  loop(lastTime = 0) {
-    return (timestamp) => {
-    const deltaTime = (timestamp - lastTime) / 1000; // en segundos
-    lastTime = timestamp;
+  loop(timestamp = 0) {
+    const deltaTime = Math.min((timestamp - this.lastTime) / 1000, 0.05);
+    this.lastTime = timestamp;
 
     this.update(deltaTime);
     this.draw();
     ColliderManager.draw(this.ctx);
 
-    requestAnimationFrame(this.loop(lastTime));
-    };
+    requestAnimationFrame(this.loop.bind(this));
   }
 
   changeSection(targetId, direction = null) {
@@ -75,8 +75,10 @@ export class GameManager {
     // 🔹 3. Recolocar ninja DURANTE la pantalla negra
     if (direction === "right") {
       this.ninja.x = 10; // reaparece pegado a la izquierda
+      this.ninja.collider.x = this.ninja.x;
     } else if (direction === "left") {
       this.ninja.x = this.canvas.width - 50; // reaparece pegado a la derecha
+      this.ninja.collider.x = this.ninja.x;
     }
 
     // 🔹 4. Fade in (volver a ver contenido)
