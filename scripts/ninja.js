@@ -72,7 +72,7 @@ export class Ninja {
 
     // gravedad
     this.y += this.velY;
-    this.velY += 9.8 * deltaTime;
+    this.velY += 10 * deltaTime;
     // comprobar colisión vertical
     const hit = ColliderManager.checkCollision(this.x, this.y, 25 * 2, 32 * 2);
     if (hit) {
