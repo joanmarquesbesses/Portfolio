@@ -1,10 +1,12 @@
 import { ColliderManager } from "../colliderManager.js";
 import { Collider } from "../collider.js";
+import { Coin } from "../coin.js";
 
 export class Home {
   constructor() {
     this.id = "home";
     this.colliders = [];
+    this.coins = [];
   }
 
   onEnter() {
@@ -23,6 +25,9 @@ export class Home {
     ColliderManager.addCollider(c2);
     ColliderManager.addCollider(c3);
     ColliderManager.addCollider(c4);
+
+    const coin = new Coin(650, 400, "./assets/coin.png");
+    this.coins.push(coin);
   }
 
   onExit() {
@@ -30,6 +35,16 @@ export class Home {
 
     this.colliders.forEach(c => ColliderManager.removeCollider(c));
     this.colliders = [];
+    this.coins = [];
   }
+
+    update(deltaTime) {
+    this.coins.forEach(c => c.update(deltaTime));
+  }
+
+  draw(ctx) {
+    this.coins.forEach(c => c.draw(ctx));
+  }
+  
 }
 

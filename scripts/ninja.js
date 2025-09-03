@@ -94,16 +94,16 @@ export class Ninja {
    }
 
     // comprobar colisión horizontal
-    if (!ColliderManager.checkCollision(newX, this.collider.y, this.width, this.height, this.collider)) {
+    if (!ColliderManager.checkCollision(newX, this.collider.y, this.width, this.height, this.collider.type)) {
       this.collider.x = newX;
     }
 
     // comprobar colisión vertical
-    const vHit = ColliderManager.checkCollision(this.collider.x, newY, this.width, this.height, this.collider);
+    const vHit = ColliderManager.checkCollision(this.collider.x, newY, this.width, this.height, this.collider.type);
     if (!vHit) {
       this.collider.y = newY;
       // probe de 1px para saber si estamos apoyados
-      const probe = ColliderManager.checkCollision(this.collider.x, this.collider.y + 1, this.width, this.height, this.collider);
+      const probe = ColliderManager.checkCollision(this.collider.x, this.collider.y + 1, this.width, this.height, this.collider.type);
       this.onGround = !!probe || this.collider.y >= floorY - 0.5;
     } else {
       if (this.velY > 0) {               // cayendo -> suelo
@@ -120,7 +120,6 @@ export class Ninja {
     this.y = this.collider.y;
 
     this.currentAnim.update(deltaTime);
-    console.log("velY:", this.velY, "onGround:", this.onGround, "newY:", newY);
   }
 
   draw(ctx) {

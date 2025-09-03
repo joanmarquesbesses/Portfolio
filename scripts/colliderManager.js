@@ -14,11 +14,18 @@ export class ColliderManager {
     this.colliders = this.colliders.filter(c => c !== collider);
   }
 
-  // ✅ Ignora un collider concreto (por referencia)
-  static checkCollision(x, y, w, h, ignoreCollider = null) {
+  static checkCollision(x, y, w, h, ignoreType = null) {
     for (let c of this.colliders) {
-      if (ignoreCollider && c === ignoreCollider) continue;   // 👈 clave
-      if (c.intersects(x, y, w, h)) return c;
+      if (ignoreType && c.type === ignoreType) continue;
+
+      if (c.intersects(x, y, w, h)) {
+        if (c.isTrigger) {
+          // dispara evento pero NO bloquea
+          if (c.onTrigger) c.onTrigger();
+          return null; // los triggers no bloquean movimiento
+        }
+        return c; // colisión normal (sólido)
+      }
     }
     return null;
   }
@@ -26,10 +33,18 @@ export class ColliderManager {
   static draw(ctx) {
     if (!this.debug) return;
     ctx.save();
-    ctx.strokeStyle = "red";
     ctx.lineWidth = 2;
     for (let c of this.colliders) {
-      ctx.strokeRect(c.x, c.y, c.w, c.h);
+      if (c.type === "solid") {
+        ctx.strokeStyle = "red";
+        ctx.strokeRect(c.x, c.y, c.w, c.h);
+      }else if (c.type === "player") {
+        ctx.strokeStyle = "blue";
+        ctx.strokeRect(c.x, c.y, c.w, c.h);
+      }else if (c.type === "coin") {
+        ctx.strokeStyle = "yellow";
+        ctx.strokeRect(c.x, c.y, c.w, c.h);
+      }
     }
     ctx.restore();
   }

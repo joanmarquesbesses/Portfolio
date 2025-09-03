@@ -36,11 +36,18 @@ export class GameManager {
     } else if (this.ninja.x < 0) {
       this.changeSection("home", "left");
     }
+
+    if (this.currentSection.update) {
+      this.currentSection.update(deltaTime);
+    }
 }
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ninja.draw(this.ctx);
+    if (this.currentSection.draw) {
+      this.currentSection.draw(this.ctx);
+    }
   }
 
   loop(timestamp = 0) {
