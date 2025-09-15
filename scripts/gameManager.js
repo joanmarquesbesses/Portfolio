@@ -11,6 +11,7 @@ export class GameManager {
     this.ninja = new Ninja(canvas);
 
     this.lastTime = 0;
+    this.isTransitioning = false;
 
     this.sections = {
       home: new Home(),
@@ -30,11 +31,12 @@ export class GameManager {
   update(deltaTime) {
     this.ninja.update(deltaTime);
 
-    // Detectar bordes y cambiar de sección
-    if (this.ninja.x + 40 > this.canvas.width) {
-      this.changeSection("games", "right");
-    } else if (this.ninja.x < 0) {
-      this.changeSection("home", "left");
+    if (!this.isTransitioning) { 
+      if (this.ninja.x + 40 > this.canvas.width) {
+        this.changeSection("games", "right");
+      } else if (this.ninja.x < 0) {
+        this.changeSection("home", "left");
+      }
     }
 
     if (this.currentSection.update) {
@@ -61,16 +63,20 @@ export class GameManager {
     requestAnimationFrame(this.loop.bind(this));
   }
 
-  changeSection(targetId, direction = null) {
+changeSection(targetId, direction = null) {
   if (this.currentSection.id === targetId) return;
 
-  const overlay = document.getElementById("overlay");
-  const transitionTime = 1000; // ms
+  this.isTransitioning = true;
 
-  // 🔹 1. Fade out (pantalla negra)
+  const overlay = document.getElementById("overlay");
+
+  // 🔹 1. Fade out
   overlay.style.opacity = "1";
 
-  setTimeout(() => {
+  const onFadeOutEnd = () => {
+    // Quitamos listener para que no se ejecute otra vez
+    overlay.removeEventListener("transitionend", onFadeOutEnd);
+
     // 🔹 2. Cambiar sección
     this.currentSection.onExit();
     this.hideSection(this.currentSection.id);
@@ -81,18 +87,24 @@ export class GameManager {
 
     // 🔹 3. Recolocar ninja DURANTE la pantalla negra
     if (direction === "right") {
-      this.ninja.x = 10; // reaparece pegado a la izquierda
+      this.ninja.x = 10;
       this.ninja.collider.x = this.ninja.x;
     } else if (direction === "left") {
-      this.ninja.x = this.canvas.width - 50; // reaparece pegado a la derecha
+      this.ninja.x = this.canvas.width - 50;
       this.ninja.collider.x = this.ninja.x;
     }
 
-    // 🔹 4. Fade in (volver a ver contenido)
-    setTimeout(() => {
+    // 🔹 4. Forzar reflow y hacer fade in
+    requestAnimationFrame(() => {
       overlay.style.opacity = "0";
-    }, 50);
-  }, transitionTime);
+    });
+  };
+
+  overlay.addEventListener("transitionend", () => {
+        this.isTransitioning = false;
+      }, { once: true });
+
+  overlay.addEventListener("transitionend", onFadeOutEnd, { once: true });
 }
 
   showSection(id) {

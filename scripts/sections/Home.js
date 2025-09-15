@@ -38,7 +38,7 @@ export class Home {
     this.coins = [];
   }
 
-    update(deltaTime) {
+  update(deltaTime) {
     this.coins.forEach(c => c.update(deltaTime));
   }
 
