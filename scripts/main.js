@@ -10,8 +10,14 @@ game.start();
 
 // 🔹 Botones de navegación
 document.querySelectorAll("#navbar button").forEach(btn => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
     const target = btn.getAttribute("data-section");
     game.changeSection(target);
+
+    // 🔹 quitar focus del botón
+    e.target.blur();
+
+    // 🔹 devolver el foco al canvas para que SPACE funcione en el juego
+    document.getElementById("gameCanvas").focus();
   });
 });

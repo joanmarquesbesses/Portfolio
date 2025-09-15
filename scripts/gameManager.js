@@ -13,6 +13,10 @@ export class GameManager {
     this.lastTime = 0;
     this.isTransitioning = false;
 
+
+    this.pixelSize = 20;
+    this.pixelSpeed = 50; 
+
     this.sections = {
       home: new Home(),
       games: new Games(),
@@ -63,63 +67,122 @@ export class GameManager {
     requestAnimationFrame(this.loop.bind(this));
   }
 
-changeSection(targetId, direction = null) {
-  if (this.currentSection.id === targetId) return;
+  pixelFadeIn(callback) {
+    const canvas = document.getElementById("pixel-overlay");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.display = "block";
 
-  this.isTransitioning = true;
+    const pixels = [];
 
-  const overlay = document.getElementById("overlay");
-
-  // 🔹 1. Fade out
-  overlay.style.opacity = "1";
-
-  const onFadeOutEnd = () => {
-    // Quitamos listener para que no se ejecute otra vez
-    overlay.removeEventListener("transitionend", onFadeOutEnd);
-
-    // 🔹 2. Cambiar sección
-    this.currentSection.onExit();
-    this.hideSection(this.currentSection.id);
-
-    this.currentSection = this.sections[targetId];
-    this.showSection(this.currentSection.id);
-    this.currentSection.onEnter();
-
-    // 🔹 3. Recolocar ninja DURANTE la pantalla negra
-    if (direction === "right") {
-      this.ninja.x = 10;
-      this.ninja.collider.x = this.ninja.x;
-    } else if (direction === "left") {
-      this.ninja.x = this.canvas.width - 50;
-      this.ninja.collider.x = this.ninja.x;
+    for (let y = 0; y < canvas.height; y += this.pixelSize) {
+      for (let x = 0; x < canvas.width; x += this.pixelSize) {
+        pixels.push({ x, y });
+      }
     }
 
-    // 🔹 4. Forzar reflow y hacer fade in
-    requestAnimationFrame(() => {
-      overlay.style.opacity = "0";
-    });
-  };
+    // orden aleatorio
+    pixels.sort(() => Math.random() - 0.5);
 
-  overlay.addEventListener("transitionend", () => {
+    let i = 0;
+     const step = () => {
+      for (let j = 0; j < this.pixelSpeed; j++) {
+        if (i >= pixels.length) {
+          if (callback) callback();
+          return;
+        }
+        const p = pixels[i++];
+        ctx.fillStyle = "black";
+        ctx.fillRect(p.x, p.y, this.pixelSize, this.pixelSize);
+      }
+      requestAnimationFrame(step);
+    };
+    step();
+  }
+
+  pixelFadeOut(callback) {
+    const canvas = document.getElementById("pixel-overlay");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.display = "block";
+
+    const pixels = [];
+
+    for (let y = 0; y < canvas.height; y += this.pixelSize) {
+      for (let x = 0; x < canvas.width; x += this.pixelSize) {
+        pixels.push({ x, y });
+      }
+    }
+
+    pixels.sort(() => Math.random() - 0.5); // orden aleatorio
+
+    // Primero cubrir todo de negro
+    ctx.fillStyle = "black";
+    for (let p of pixels) {
+      ctx.fillRect(p.x, p.y, this.pixelSize, this.pixelSize);
+    }
+
+    let i = 0;
+    const step = () => {
+      for (let j = 0; j < this.pixelSpeed; j++) {
+        if (i >= pixels.length) {
+          canvas.style.display = "none";
+          if (callback) callback();
+          return;
+        }
+        const p = pixels[i++];
+        ctx.clearRect(p.x, p.y, this.pixelSize, this.pixelSize);
+      }
+      requestAnimationFrame(step);
+    };
+    step();
+  }
+
+  changeSection(targetId, direction = null) {
+    if (this.currentSection.id === targetId) return;
+    this.isTransitioning = true;
+
+    this.pixelFadeIn(() => {
+      // 🔹 cambiar sección en negro
+      this.currentSection.onExit();
+      this.hideSection(this.currentSection.id);
+
+      this.currentSection = this.sections[targetId];
+      this.showSection(this.currentSection.id);
+      this.currentSection.onEnter();
+
+      // 🔹 recolocar ninja
+      if (direction === "right") {
+        this.ninja.x = 10;
+      } else if (direction === "left") {
+        this.ninja.x = this.canvas.width - 50;
+      } else {
+        this.ninja.x = this.canvas.width / 2 - 25;
+      }
+
+      this.ninja.collider.x = this.ninja.x;
+
+      this.pixelFadeOut(() => {
         this.isTransitioning = false;
-      }, { once: true });
-
-  overlay.addEventListener("transitionend", onFadeOutEnd, { once: true });
-}
+      });
+    });
+  }
 
   showSection(id) {
-  const section = document.getElementById(id);
-  section.classList.remove("hidden");
-  requestAnimationFrame(() => { // esperar al siguiente frame
-    section.style.opacity = "1";
-  });
-}
+    const section = document.getElementById(id);
+    section.classList.remove("hidden");
+    requestAnimationFrame(() => {
+      section.style.opacity = "1";
+    });
+  }
 
   hideSection(id) {
-  const section = document.getElementById(id);
-  section.style.opacity = "0";
-  setTimeout(() => {
-    section.classList.add("hidden");
-  }, 1); // mismo tiempo que el transition en CSS
-}
+    const section = document.getElementById(id);
+    section.style.opacity = "0";
+    setTimeout(() => {
+      section.classList.add("hidden");
+    }, 1);
+  }
 }

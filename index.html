@@ -14,8 +14,6 @@
     <button data-section="contact">Contacto</button>
   </nav>
 
-  <div id="overlay"></div>
-
   <section id="home" class="hero">
     <div class="card">
       <h1>Hola, soy <span>Joan</span></h1>
@@ -23,16 +21,27 @@
       <img src="assets/home.png" alt="Imagen Home">
     </div>
   </section>
-  <section id="games" class="hidden">🎮 Aquí están los GAMES
-    <img src="assets/game1.png" alt="Game 1">
-    <img src="assets/game2.png" alt="Game 2">
-    <img src="assets/game3.png" alt="Game 3">
+  <section id="games" class="hidden">
+    <div class="games-grid">
+      <div class="game-card">
+        <img src="assets/game1.png" alt="Game 1">
+        <h3>Game 1</h3>
+      </div>
+      <div class="game-card">
+        <img src="assets/game2.png" alt="Game 2">
+        <h3>Game 2</h3>
+      </div>
+      <div class="game-card">
+        <img src="assets/game3.png" alt="Game 3">
+        <h3>Game 3</h3>
+      </div>
+  </div>
   </section>
   <section id="contact" class="hidden">📩 Contacto
     <!-- <img src="assets/contact.png" alt="Imagen Contacto"> -->
   </section>
-
-  <canvas id="gameCanvas"></canvas>
+    <canvas id="pixel-overlay"></canvas>
+    <canvas id="gameCanvas" tabindex="0"></canvas>
 
   <script type="module" src="scripts/main.js"></script>
 </body>
