@@ -171,6 +171,45 @@ html, body {
   font-size: 1.2rem;
 }
 
+.game-card .img-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.static-img, .gif-img {
+  width: 90%;
+  border-radius: 12px;
+  transition: opacity 0.3s ease;
+}
+
+.gif-img {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.title-hover {
+  display: none;
+  color: #fff;
+}
+
+.game-card:hover .static-img {
+  opacity: 0;
+}
+.game-card:hover .gif-img {
+  opacity: 1;
+}
+.game-card:hover .title {
+  display: none;
+}
+.game-card:hover .title-hover {
+  display: block;
+}
+
 .side-wall {
   position: fixed;
   top: 0;
