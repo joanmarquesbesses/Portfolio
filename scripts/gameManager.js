@@ -18,6 +18,9 @@ export class GameManager {
     this.canvas.width = this.LOGICAL_WIDTH;
     this.canvas.height = this.LOGICAL_HEIGHT;
 
+    this.scaleX = this.canvas.clientWidth / this.LOGICAL_WIDTH;
+    this.scaleY = this.canvas.clientHeight / this.LOGICAL_HEIGHT;
+
     this.ctx.imageSmoothingEnabled = false;
 
     this.resizeCanvas();
@@ -41,38 +44,34 @@ export class GameManager {
 
   resizeCanvas() {
     const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
 
     const aspect = 16 / 9;
     let width = window.innerWidth;
     let height = window.innerHeight;
 
-    // Ajustar a la pantalla manteniendo 16:9
     if (width / height > aspect) {
-      // Pantalla demasiado ancha → ajustar por alto
       height = window.innerHeight;
       width = height * aspect;
     } else {
-      // Pantalla demasiado alta → ajustar por ancho
       width = window.innerWidth;
       height = width / aspect;
     }
 
-    canvas.width = width;
-    canvas.height = height;
+    // 🔹 OJO: mantenemos el tamaño lógico fijo
+    canvas.width = this.LOGICAL_WIDTH;
+    canvas.height = this.LOGICAL_HEIGHT;
 
+    // 🔹 Escalado solo por CSS
     canvas.style.width = width + "px";
     canvas.style.height = height + "px";
     canvas.style.left = "50%";
     canvas.style.top = "50%";
     canvas.style.transform = "translate(-50%, -50%)";
 
-    // Ajustar las paredes
+    // Ajustar side-walls
     const leftWall = document.querySelector(".side-wall.left");
     const rightWall = document.querySelector(".side-wall.right");
-
     const sideWidth = (window.innerWidth - width) / 2;
-
     leftWall.style.width = sideWidth + "px";
     rightWall.style.width = sideWidth + "px";
   }
@@ -84,17 +83,17 @@ export class GameManager {
   update(deltaTime) {
     this.ninja.update(deltaTime);
 
-    if (!this.isTransitioning) { 
-      if (this.ninja.x + this.ninja.width > this.LOGICAL_WIDTH) {
+    if (!this.isTransitioning) {
+      if (this.ninja.x + this.ninja.width >= this.LOGICAL_WIDTH) {
         this.changeSection("games", "right");
-      } else if (this.ninja.x < 0) {
+      } else if (this.ninja.x <= 0) {
         this.changeSection("home", "left");
       }
-    }
+    } 
 
-    if (this.currentSection.update) {
-      this.currentSection.update(deltaTime);
-    }
+  if (this.currentSection.update) {
+    this.currentSection.update(deltaTime);
+  }
 }
 
   draw() {

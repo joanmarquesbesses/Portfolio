@@ -173,22 +173,35 @@ html, body {
   top: 0;
   bottom: 0;
   width: max(50px, calc((100vw - 1920px) / 2));
+  background: var(--canvas-bg); /* mismo color que el canvas */
+  overflow: hidden;
   z-index: 1;
   pointer-events: none;
 }
 
 .side-wall.left {
   left: 0;
-  background: linear-gradient(to right,
-    rgba(0,0,0,0.6) 0%,            /* sombra oscura */
-    var(--canvas-bg) 100%          /* se funde con el fondo */
-  );
 }
 
 .side-wall.right {
   right: 0;
-  background: linear-gradient(to left,
-    rgba(0,0,0,0.6) 0%,            /* sombra oscura */
-    var(--canvas-bg) 100%          /* se funde con el fondo */
+}
+
+.side-wall::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.25) 0%,
+    rgba(0, 0, 0, 0.35) 60%,
+    rgba(0, 0, 0, 0.5) 100%
   );
+  opacity: 0.4;
+  animation: subtleFade 8s ease-in-out infinite alternate;
+}
+
+@keyframes subtleFade {
+  from { transform: scale(1); opacity: 0.3; }
+  to   { transform: scale(1.1); opacity: 0.5; }
 }
