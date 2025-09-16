@@ -27,7 +27,7 @@ export class GameManager {
     window.addEventListener("resize", () => this.resizeCanvas());
     
     this.pixelSize = 20;
-    this.pixelSpeed = 50; 
+    this.pixelDuration = 620; // ms
     
     this.ninja = new Ninja(canvas);
 
@@ -121,30 +121,36 @@ export class GameManager {
     canvas.style.display = "block";
 
     const pixels = [];
-
     for (let y = 0; y < canvas.height; y += this.pixelSize) {
       for (let x = 0; x < canvas.width; x += this.pixelSize) {
         pixels.push({ x, y });
       }
     }
-
-    // orden aleatorio
     pixels.sort(() => Math.random() - 0.5);
 
     let i = 0;
-     const step = () => {
-      for (let j = 0; j < this.pixelSpeed; j++) {
-        if (i >= pixels.length) {
-          if (callback) callback();
-          return;
-        }
+    const total = pixels.length;
+    const duration = this.pixelDuration; // ms → duración total
+    const start = performance.now();
+
+    const step = (now) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const targetCount = Math.floor(progress * total);
+
+      while (i < targetCount) {
         const p = pixels[i++];
         ctx.fillStyle = "black";
         ctx.fillRect(p.x, p.y, this.pixelSize, this.pixelSize);
       }
-      requestAnimationFrame(step);
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        if (callback) callback();
+      }
     };
-    step();
+    requestAnimationFrame(step);
   }
 
   pixelFadeOut(callback) {
@@ -155,35 +161,42 @@ export class GameManager {
     canvas.style.display = "block";
 
     const pixels = [];
-
     for (let y = 0; y < canvas.height; y += this.pixelSize) {
       for (let x = 0; x < canvas.width; x += this.pixelSize) {
         pixels.push({ x, y });
       }
     }
+    pixels.sort(() => Math.random() - 0.5);
 
-    pixels.sort(() => Math.random() - 0.5); // orden aleatorio
-
-    // Primero cubrir todo de negro
+    // primero cubrir todo
     ctx.fillStyle = "black";
     for (let p of pixels) {
       ctx.fillRect(p.x, p.y, this.pixelSize, this.pixelSize);
     }
 
     let i = 0;
-    const step = () => {
-      for (let j = 0; j < this.pixelSpeed; j++) {
-        if (i >= pixels.length) {
-          canvas.style.display = "none";
-          if (callback) callback();
-          return;
-        }
+    const total = pixels.length;
+    const duration = this.pixelDuration; // ms → duración total
+    const start = performance.now();
+
+    const step = (now) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const targetCount = Math.floor(progress * total);
+
+      while (i < targetCount) {
         const p = pixels[i++];
         ctx.clearRect(p.x, p.y, this.pixelSize, this.pixelSize);
       }
-      requestAnimationFrame(step);
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        canvas.style.display = "none";
+        if (callback) callback();
+      }
     };
-    step();
+    requestAnimationFrame(step);
   }
 
   changeSection(targetId, direction = null) {
