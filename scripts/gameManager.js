@@ -8,14 +8,23 @@ export class GameManager {
   constructor(canvas, ctx) {
     this.canvas = canvas;
     this.ctx = ctx;
-    this.ninja = new Ninja(canvas);
-
+    
     this.lastTime = 0;
     this.isTransitioning = false;
+    
+    this.LOGICAL_WIDTH = 1920;
+    this.LOGICAL_HEIGHT = 1080;
 
+    this.canvas.width = this.LOGICAL_WIDTH;
+    this.canvas.height = this.LOGICAL_HEIGHT;
 
+    this.resizeCanvas();
+    window.addEventListener("resize", () => this.resizeCanvas());
+    
     this.pixelSize = 20;
     this.pixelSpeed = 50; 
+    
+    this.ninja = new Ninja(canvas);
 
     this.sections = {
       home: new Home(),
@@ -26,6 +35,15 @@ export class GameManager {
     this.currentSection = this.sections.home;
     this.showSection(this.currentSection.id);
     this.currentSection.onEnter();
+  }
+
+  resizeCanvas() {
+    const scaleX = window.innerWidth / this.LOGICAL_WIDTH;
+    const scaleY = window.innerHeight / this.LOGICAL_HEIGHT;
+    this.scale = Math.min(scaleX, scaleY);
+
+    this.canvas.style.width = this.LOGICAL_WIDTH * this.scale + "px";
+    this.canvas.style.height = this.LOGICAL_HEIGHT * this.scale + "px";
   }
 
   start() {

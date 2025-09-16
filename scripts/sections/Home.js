@@ -13,7 +13,7 @@ export class Home {
     console.log("Entrando en Home");
 
     // 🔹 Añadimos un collider en la esquina
-    const c = new Collider(200, 750, 100, 100);
+    const c = new Collider(200, 770, 100, 100);
     const c2 = new Collider(300, 700, 100, 100);
     const c3 = new Collider(400, 650, 100, 100);
     const c4 = new Collider(500, 600, 100, 100);
