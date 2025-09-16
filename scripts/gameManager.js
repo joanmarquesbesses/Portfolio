@@ -18,6 +18,8 @@ export class GameManager {
     this.canvas.width = this.LOGICAL_WIDTH;
     this.canvas.height = this.LOGICAL_HEIGHT;
 
+    this.ctx.imageSmoothingEnabled = false;
+
     this.resizeCanvas();
     window.addEventListener("resize", () => this.resizeCanvas());
     
@@ -38,12 +40,41 @@ export class GameManager {
   }
 
   resizeCanvas() {
-    const scaleX = window.innerWidth / this.LOGICAL_WIDTH;
-    const scaleY = window.innerHeight / this.LOGICAL_HEIGHT;
-    this.scale = Math.min(scaleX, scaleY);
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
 
-    this.canvas.style.width = this.LOGICAL_WIDTH * this.scale + "px";
-    this.canvas.style.height = this.LOGICAL_HEIGHT * this.scale + "px";
+    const aspect = 16 / 9;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    // Ajustar a la pantalla manteniendo 16:9
+    if (width / height > aspect) {
+      // Pantalla demasiado ancha → ajustar por alto
+      height = window.innerHeight;
+      width = height * aspect;
+    } else {
+      // Pantalla demasiado alta → ajustar por ancho
+      width = window.innerWidth;
+      height = width / aspect;
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    canvas.style.left = "50%";
+    canvas.style.top = "50%";
+    canvas.style.transform = "translate(-50%, -50%)";
+
+    // Ajustar las paredes
+    const leftWall = document.querySelector(".side-wall.left");
+    const rightWall = document.querySelector(".side-wall.right");
+
+    const sideWidth = (window.innerWidth - width) / 2;
+
+    leftWall.style.width = sideWidth + "px";
+    rightWall.style.width = sideWidth + "px";
   }
 
   start() {
@@ -54,7 +85,7 @@ export class GameManager {
     this.ninja.update(deltaTime);
 
     if (!this.isTransitioning) { 
-      if (this.ninja.x + 40 > this.canvas.width) {
+      if (this.ninja.x + this.ninja.width > this.LOGICAL_WIDTH) {
         this.changeSection("games", "right");
       } else if (this.ninja.x < 0) {
         this.changeSection("home", "left");
@@ -67,11 +98,9 @@ export class GameManager {
 }
 
   draw() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.clearRect(0, 0, this.LOGICAL_WIDTH, this.LOGICAL_HEIGHT);
+    this.currentSection?.draw?.(this.ctx);
     this.ninja.draw(this.ctx);
-    if (this.currentSection.draw) {
-      this.currentSection.draw(this.ctx);
-    }
   }
 
   loop(timestamp = 0) {
@@ -175,9 +204,9 @@ export class GameManager {
       if (direction === "right") {
         this.ninja.x = 10;
       } else if (direction === "left") {
-        this.ninja.x = this.canvas.width - 50;
+        this.ninja.x = this.LOGICAL_WIDTH - this.ninja.width - 10;
       } else {
-        this.ninja.x = this.canvas.width / 2 - 25;
+        this.ninja.x = this.LOGICAL_WIDTH / 2 - this.ninja.width / 2;
       }
 
       this.ninja.collider.x = this.ninja.x;

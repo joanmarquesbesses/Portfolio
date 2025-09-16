@@ -1,10 +1,16 @@
-/* El canvas ocupa toda la pantalla de fondo */
+:root {
+  --canvas-bg: #fd6e6e; /* ← aquí cambias el color una sola vez */
+}
+
 #gameCanvas {
   position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--canvas-bg);
+  display: block;
   z-index: 0;
+  outline: none;
 }
 
 #pixel-overlay {
@@ -21,13 +27,15 @@
 #navbar {
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1920px;
+  max-width: 100%;
   height: 50px;
-  background: rgba(0,0,0,0.8);
-  color: white;
+  background: #000; /* negro sólido */
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  gap: 20px;
   z-index: 10;
 }
 
@@ -117,7 +125,8 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* 👈 evita cualquier scroll */
+  background: transparent;
+  overflow: hidden;
 }
 
 @keyframes gradientShift {
@@ -157,4 +166,29 @@ html, body {
 .game-card h3 {
   margin-top: 1rem;
   font-size: 1.2rem;
+}
+
+.side-wall {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: max(50px, calc((100vw - 1920px) / 2));
+  z-index: 1;
+  pointer-events: none;
+}
+
+.side-wall.left {
+  left: 0;
+  background: linear-gradient(to right,
+    rgba(0,0,0,0.6) 0%,            /* sombra oscura */
+    var(--canvas-bg) 100%          /* se funde con el fondo */
+  );
+}
+
+.side-wall.right {
+  right: 0;
+  background: linear-gradient(to left,
+    rgba(0,0,0,0.6) 0%,            /* sombra oscura */
+    var(--canvas-bg) 100%          /* se funde con el fondo */
+  );
 }
