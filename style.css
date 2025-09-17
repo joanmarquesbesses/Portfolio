@@ -1,5 +1,5 @@
 :root {
-  --canvas-bg: #fd6e6e; /* ← aquí cambias el color una sola vez */
+  --canvas-bg: #5ca0df; /* ← aquí cambias el color una sola vez */
 }
 
 #gameCanvas {
@@ -28,43 +28,32 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%; /* 👈 ocupa todo el ancho */
+  width: 100%;
   height: 50px;
   background: #000; /* negro sólido */
   display: flex;
-  justify-content: center; /* 👈 centra botones */
+  justify-content: center;
   gap: 1rem;
   z-index: 10;
   padding: 0 1rem;
   box-sizing: border-box;
 }
 
-/* Botones */
 #navbar button {
   background: none;
   border: 1px solid white;
   color: white;
   padding: 0.5rem 1rem;
-  font-size: clamp(0.8rem, 2vw, 1rem); /* 👈 escala según pantalla */
+  font-size: clamp(0.8rem, 2vw, 1rem);
   cursor: pointer;
   border-radius: 6px;
   transition: background 0.3s;
-  white-space: nowrap; /* evita que se corten palabras */
+  white-space: nowrap;
 }
 
 #navbar button:hover {
   background: white;
   color: #222;
-}
-
-#pixel-overlay {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-  pointer-events: none;
-  display: none;
 }
 
 section {
@@ -74,7 +63,7 @@ section {
   width: 100%;
   min-height: calc(100vh - 50px);
   padding: 1rem;
-  font-size: clamp(1rem, 2vw, 2rem); /* texto responsive */
+  font-size: clamp(1rem, 2vw, 2rem);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,7 +72,6 @@ section {
   box-sizing: border-box;
 }
 
-/* Para ocultas */
 .hidden {
   opacity: 0;
   pointer-events: none;
@@ -99,9 +87,6 @@ section {
 #games {
   gap: 20px;
 }
-#games img {
-  width: clamp(100px, 12vw, 150px);
-}
 
 #home.hero {
   position: absolute;
@@ -114,7 +99,7 @@ section {
   text-align: center;
 }
 
-/* Tarjeta */
+/* Tarjeta de home */
 #home .card {
   background: rgba(0,0,0,0.6);
   padding: 2rem;
@@ -132,15 +117,10 @@ html, body {
   background: var(--canvas-bg);
 }
 
-@keyframes gradientShift {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
-}
-
+/* Grid de juegos */
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 👈 fijo 4 columnas */
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
   padding: 2rem;
   justify-items: center;
@@ -150,10 +130,12 @@ html, body {
   background: rgba(0,0,0,0.6);
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-  padding: 1.5rem;
-  text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  max-width: min(90%, 300px);
+  width: clamp(220px, 20vw, 320px); /* 👈 un poco más grande */
+  aspect-ratio: 16 / 9; /* 👈 rectangular horizontal, tipo portada */
+  overflow: hidden;
+  position: relative;
+  padding: 0; /* quita espacio interno */
 }
 
 .game-card:hover {
@@ -161,40 +143,26 @@ html, body {
   box-shadow: 0 12px 30px rgba(255, 255, 255, 0.3);
 }
 
-.game-card img {
-  width: clamp(150px, 20vw, 220px);
-  border-radius: 12px;
-}
-
-.game-card h3 {
-  margin-top: 1rem;
-  font-size: 1.2rem;
-}
-
-.game-card .img-wrapper {
+.img-wrapper {
   position: relative;
   width: 100%;
-  display: flex;
-  justify-content: center;
+  height: 100%;
+  overflow: hidden;
 }
 
 .static-img, .gif-img {
-  width: 90%;
-  border-radius: 12px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
   transition: opacity 0.3s ease;
 }
 
 .gif-img {
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
   opacity: 0;
   pointer-events: none;
-}
-
-.title-hover {
-  display: none;
-  color: #fff;
 }
 
 .game-card:hover .static-img {
@@ -203,19 +171,14 @@ html, body {
 .game-card:hover .gif-img {
   opacity: 1;
 }
-.game-card:hover .title {
-  display: none;
-}
-.game-card:hover .title-hover {
-  display: block;
-}
 
+/* Paredes laterales */
 .side-wall {
   position: fixed;
   top: 0;
   bottom: 0;
   width: max(50px, calc((100vw - 1920px) / 2));
-  background: var(--canvas-bg); /* mismo color que el canvas */
+  background: var(--canvas-bg);
   overflow: hidden;
   z-index: 1;
   pointer-events: none;
@@ -224,7 +187,6 @@ html, body {
 .side-wall.left {
   left: 0;
 }
-
 .side-wall.right {
   right: 0;
 }
@@ -250,12 +212,11 @@ html, body {
 
 @media (max-width: 1000px) {
   .games-grid {
-    grid-template-columns: repeat(2, 1fr); /* tablets: 2 columnas */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
-
 @media (max-width: 600px) {
   .games-grid {
-    grid-template-columns: 1fr; /* móvil: 1 columna */
+    grid-template-columns: 1fr;
   }
 }
