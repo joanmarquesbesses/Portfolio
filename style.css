@@ -1,5 +1,5 @@
 :root {
-  --canvas-bg: linear-gradient(135deg, #d6c3ff, #f0f0f0); /* ← aquí cambias el color una sola vez */
+  --canvas-bg: linear-gradient(135deg, #5d1de7, #49d6a7); /* ← aquí cambias el color una sola vez */
 }
 
 #gameCanvas {
@@ -8,6 +8,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: var(--canvas-bg);
+  background-size: 200% 200%; /* más grande para poder moverlo */
+  animation: gradientMove 5s ease-in-out infinite alternate;
   display: block;
   z-index: 0;
   outline: none;
@@ -144,6 +146,8 @@ html, body {
   height: 100%;
   overflow: hidden;
   background: var(--canvas-bg);
+  background-size: 200% 200%; /* más grande para poder moverlo */
+  animation: gradientMove 5s ease-in-out infinite alternate;
 }
 
 /* Grid de juegos */
@@ -247,5 +251,14 @@ html, body {
 @media (max-width: 600px) {
   .games-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
   }
 }
