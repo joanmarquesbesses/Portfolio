@@ -1,5 +1,5 @@
 :root {
-  --canvas-bg: #5ca0df; /* ← aquí cambias el color una sola vez */
+  --canvas-bg: linear-gradient(135deg, #d6c3ff, #f0f0f0); /* ← aquí cambias el color una sola vez */
 }
 
 #gameCanvas {
@@ -78,14 +78,19 @@ section {
 }
 
 #home h1 {
-  margin: 0 0 1rem;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  margin: 0 0 0.5rem;
+  color: white;
 }
-#home img {
-  width: clamp(120px, 15vw, 200px);
-  margin-top: 1rem;
+
+#home h1 span {
+  color: #5ca0df; /* 👈 tu color principal */
 }
-#games {
-  gap: 20px;
+
+#home .subtitle {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: #ddd;
+  margin: 0;
 }
 
 #home.hero {
@@ -101,11 +106,35 @@ section {
 
 /* Tarjeta de home */
 #home .card {
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.65);
   padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
   max-width: 500px;
+  text-align: center;
+  backdrop-filter: blur(8px); /* 👈 efecto glassmorphism */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#home .card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.7);
+}
+
+#home .profile-pic {
+  width: clamp(120px, 15vw, 200px);
+  height: clamp(120px, 15vw, 200px);
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 1.5rem;
+  border: 4px solid white;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+#home .profile-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 html, body {
