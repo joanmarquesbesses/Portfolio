@@ -35,9 +35,9 @@ export class GameManager {
     this.ninja = new Ninja(canvas);
 
     this.sections = {
-      home: new Home(),
-      games: new Games(),
-      contact: new Contact()
+      home: new Home(this),
+      games: new Games(this),
+      contact: new Contact(this)
     };
 
     this.currentSection = this.sections.home;
@@ -77,6 +77,9 @@ export class GameManager {
     const sideWidth = (window.innerWidth - width) / 2;
     leftWall.style.width = sideWidth + "px";
     rightWall.style.width = sideWidth + "px";
+
+    this.scaleX = this.canvas.clientWidth / this.LOGICAL_WIDTH;
+    this.scaleY = this.canvas.clientHeight / this.LOGICAL_HEIGHT;
   }
 
   start() {

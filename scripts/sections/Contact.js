@@ -1,6 +1,7 @@
 export class Contact {
-  constructor() {
+  constructor(game) {
     this.id = "contact";
+    this.game = game;
   }
 
   onEnter() {

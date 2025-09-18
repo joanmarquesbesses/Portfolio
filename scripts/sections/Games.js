@@ -1,6 +1,7 @@
 export class Games {
-  constructor() {
+  constructor(game) {
     this.id = "games";
+    this.game = game;
   }
 
   onEnter() {
