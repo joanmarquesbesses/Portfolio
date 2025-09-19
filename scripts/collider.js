@@ -6,6 +6,12 @@ export class Collider {
     this._h = h;
     this.type = type;       // "solid" o "player" o "coin"
     this.isTrigger = isTrigger;
+
+    this.isMoving = false;
+    this.speedY = 0;       
+    this.minY = y;       
+    this.maxY = y;
+    this.direction = 1;
   }
 
   // 🔹 Aliases: width <-> w, height <-> h
@@ -20,6 +26,23 @@ export class Collider {
 
   get h() { return this._h; }
   set h(value) { this._h = value; }
+
+  update(deltaTime) {
+    if (!this.isMoving) return;
+
+    this.y += this.speedY * this.direction * deltaTime;
+
+    // Rebotar en los límites
+    if (this.y <= this.minY) {
+      this.y = this.minY;
+      this.direction = 1; // bajar
+    } else if (this.y >= this.maxY) {
+      this.y = this.maxY;
+      this.direction = -1; // subir
+    }
+
+    console.log(this.y);
+  }
 
   // Ejemplo de método de colisión
   intersects(x, y, w, h) {

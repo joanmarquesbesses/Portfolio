@@ -105,6 +105,7 @@ export class Ninja {
       // probe de 1px para saber si estamos apoyados
       const probe = ColliderManager.checkCollision(this.collider.x, this.collider.y + 1, this.width, this.height, this.collider.type);
       this.onGround = !!probe || this.collider.y >= floorY - 0.5;
+      this.groundCollider = probe;
     } else {
       if (this.velY > 0) {               // cayendo -> suelo
         this.collider.y = vHit.y - this.height - 0.01;
@@ -115,6 +116,12 @@ export class Ninja {
         this.velY = 0;
       }
     }
+
+    if (this.onGround && this.groundCollider?.isMoving) {
+      this.collider.y += this.groundCollider.speedY * this.groundCollider.direction * deltaTime;
+      this.y = this.collider.y; // mantener sincronizado
+    }
+    
     // sincronizar para dibujar
     this.x = this.collider.x;
     this.y = this.collider.y;

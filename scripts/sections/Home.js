@@ -9,15 +9,13 @@ export class Home {
     this.colliders = [];
     this.coins = [];
     this.htmlCollider = null;
+    this.movingPlatform = [];
   }
 
   onEnter() {
     // 🔹 Añadimos un collider en la esquina
-    const c = new Collider(200, 770, 100, 100);
-    const c2 = new Collider(300, 700, 100, 100);
-    const c3 = new Collider(400, 650, 100, 100);
-    const c4 = new Collider(500, 600, 100, 100);  
-    this.colliders.push(c, c2, c3, c4);
+    const c = new Collider(200, 770, 100, 100);  
+    this.colliders.push(c);
     this.colliders.forEach(collider => ColliderManager.addCollider(collider));
 
     const coin = new Coin(650, 400, "./assets/coin.png");
@@ -33,6 +31,14 @@ export class Home {
         requestAnimationFrame(() => this.updateHtmlCollider());
       }
     }
+
+    const platform = new Collider(300, 400, 200, 20, "solid");
+    platform.isMoving = true;
+    platform.speedY = 50; // píxeles por segundo
+    platform.minY = 400;
+    platform.maxY = 600;
+    this.movingPlatform.push(platform);
+    this.movingPlatform.forEach(p => ColliderManager.addCollider(p));
   }
 
   onExit() {
@@ -47,6 +53,9 @@ export class Home {
     }
 
     this.coins = [];
+
+    this.movingPlatform.forEach(p => ColliderManager.removeCollider(p));
+    this.movingPlatform = [];
   }
 
   update(deltaTime) {
@@ -55,6 +64,8 @@ export class Home {
     if (this.htmlCollider) {
       this.updateHtmlCollider();
     }
+
+    this.movingPlatform.forEach(p => p.update(deltaTime));
   }
 
   updateHtmlCollider() {
