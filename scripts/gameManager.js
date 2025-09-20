@@ -215,6 +215,7 @@ export class GameManager {
   }
 
   changeSection(targetId, direction = null, instant = false) {
+    this.resetGamesDetail();
     if (this.currentSection.id === targetId) return;
     
     const doChange = () => {
@@ -281,6 +282,7 @@ export class GameManager {
 
   startGame() {
     this.resizeCanvas();
+    document.body.style.overflow = "hidden"; 
     document.querySelectorAll(".side-wall").forEach(w => w.style.display = "block");
     this.canvas.style.display = "block";
     this.pixelFadeOut(); 
@@ -293,6 +295,7 @@ export class GameManager {
       this.canvas.style.display = "none";
       document.querySelectorAll(".side-wall").forEach(w => w.style.display = "none");
       this.pixelFadeOut();
+      document.body.style.overflow = "auto";  // Restaurar scroll
     });
   }
 
@@ -317,6 +320,18 @@ export class GameManager {
             if (onToggled) onToggled(true);
           });
       });
+    }
+  }
+
+  resetGamesDetail() {
+    document.querySelectorAll(".game-detail").forEach(sec => {
+      sec.classList.add("hidden");
+      sec.style.opacity = "0";
+    });
+    const gamesSection = document.getElementById("games");
+    if (gamesSection) {
+      gamesSection.classList.remove("hidden");
+      gamesSection.style.opacity = "1";
     }
   }
 }
