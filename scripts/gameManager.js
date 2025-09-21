@@ -215,12 +215,14 @@ export class GameManager {
   }
 
   changeSection(targetId, direction = null, instant = false) {
-    this.resetGamesDetail();
     if (this.currentSection.id === targetId) return;
     
     const doChange = () => {
       this.currentSection.onExit?.();
       this.hideSection(this.currentSection.id);
+      if (this.currentSection.id === "games") {
+        this.resetGamesDetail();
+      }
 
       this.currentSection = this.sections[targetId];
       this.showSection(this.currentSection.id);
@@ -328,10 +330,5 @@ export class GameManager {
       sec.classList.add("hidden");
       sec.style.opacity = "0";
     });
-    const gamesSection = document.getElementById("games");
-    if (gamesSection) {
-      gamesSection.classList.remove("hidden");
-      gamesSection.style.opacity = "1";
-    }
   }
 }
