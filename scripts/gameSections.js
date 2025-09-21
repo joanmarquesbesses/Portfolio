@@ -1,60 +1,39 @@
+// scripts/gameSections.js
+// Maneja clicks en grid -> detalle y el carrusel.
+// Usa window.game (instanciado por main.js) para pedir cambios de sección.
+
 document.addEventListener("DOMContentLoaded", () => {
-  const gamesSection = document.getElementById("games");
-  if (!gamesSection) {
-    console.warn("⚠️ No se encontró la sección #games");
-    return;
+  const game = window.game;
+  if (!game) {
+    console.warn("GameManager (window.game) no está disponible — asegúrate de que main.js se carga antes que gameSections.js");
   }
 
-  // Navegación grid → detalle
+  const gamesSection = document.getElementById("games");
+  if (!gamesSection) {
+    console.warn("No se encontró sección #games");
+  }
+
+  // Grid -> detalle: delegamos la navegación al GameManager
   document.querySelectorAll(".game-card").forEach(card => {
     card.addEventListener("click", () => {
       const targetId = card.dataset.target;
-      const targetSection = document.getElementById(targetId);
-
-      if (!targetSection) {
-        console.warn(`⚠️ No se encontró la sección detalle #${targetId}`);
-        return;
-      }
-
-      // 🔹 Ocultar grid con fade
-      gamesSection.style.transition = "opacity 0.5s ease";
-      gamesSection.style.opacity = "0";
-      setTimeout(() => {
-        gamesSection.classList.add("hidden");
-        // 🔹 Mostrar detalle con fade
-        targetSection.classList.remove("hidden");
-        targetSection.style.transition = "opacity 0.5s ease";
-        requestAnimationFrame(() => {
-          targetSection.style.opacity = "1";
-       });
-      }, 500);
+      if (!targetId) return;
+      // si el juego está activo usamos pixel fade (instant=false),
+      // si no, evitamos pixel y usamos fade css (instant = true)
+      game.changeSection(targetId, "right", !game.isRunning);
     });
   });
 
-  // Volver al grid
+  // Botones "volver" de detalles
   document.querySelectorAll(".back-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const parent = btn.closest(".game-detail");
-      if (!parent) return;
-
-      // 🔹 Ocultar detalle con fade
-      parent.style.transition = "opacity 0.5s ease";
-      parent.style.opacity = "0";
-
-      setTimeout(() => {
-        parent.classList.add("hidden");
-
-        // 🔹 Mostrar grid con fade
-        gamesSection.classList.remove("hidden");
-        gamesSection.style.transition = "opacity 0.5s ease";
-        requestAnimationFrame(() => {
-          gamesSection.style.opacity = "1";
-        });
-      }, 500);
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      // volvemos a 'games'
+      game.changeSection("games", "left", !game.isRunning);
     });
   });
 
-  // Carrusel
+  // Carruseles
   document.querySelectorAll(".carousel").forEach(carousel => {
     const track = carousel.querySelector(".carousel-track");
     const items = carousel.querySelectorAll(".carousel-item");
@@ -63,6 +42,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let index = 0;
     const update = () => {
       track.style.transform = `translateX(-${index * 100}%)`;
+      // si el iframe tiene youtube, pausamos el vídeo al cambiar
+      items.forEach((item, i) => {
+        if (i !== index) {
+          const iframe = item.querySelector("iframe");
+          if (iframe && iframe.src.includes("youtube.com")) {
+            pauseYoutube(iframe);
+          }
+        }
+      });
     };
 
     carousel.querySelector(".next")?.addEventListener("click", () => {
@@ -74,5 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
       index = (index - 1 + items.length) % items.length;
       update();
     });
+    
   });
 });
+
+function pauseYoutube(iframe) {
+  iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+}

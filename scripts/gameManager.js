@@ -1,3 +1,4 @@
+// scripts/gameManager.js
 import { Home } from "./sections/Home.js";
 import { Games } from "./sections/Games.js";
 import { Contact } from "./sections/Contact.js";
@@ -10,44 +11,46 @@ export class GameManager {
     this.ctx = ctx;
 
     this.isRunning = false;
-    
-    this.lastTime = 0;
     this.isTransitioning = false;
-    
+
+    this.lastTime = 0;
+
     this.LOGICAL_WIDTH = 1920;
     this.LOGICAL_HEIGHT = 1080;
 
+    // tamaño lógico
     this.canvas.width = this.LOGICAL_WIDTH;
     this.canvas.height = this.LOGICAL_HEIGHT;
-
-    this.scaleX = this.canvas.clientWidth / this.LOGICAL_WIDTH;
-    this.scaleY = this.canvas.clientHeight / this.LOGICAL_HEIGHT;
-
     this.ctx.imageSmoothingEnabled = false;
 
-    this.resizeCanvas();
-    canvas.style.display = "none"; // 🔹 oculto por defecto
-    window.addEventListener("resize", () => this.resizeCanvas());
-    
-    this.pixelSize = 20;
-    this.pixelDuration = 620; // ms
-    
-    this.ninja = new Ninja(canvas);
-
+    // secciones "core" (las detail se gestionan por ID en el DOM)
     this.sections = {
       home: new Home(this),
       games: new Games(this),
-      contact: new Contact(this)
+      contact: new Contact(this),
+      // no registres aquí las secciones detalle si no quieres; el manager trabaja por ID
     };
 
-    this.currentSection = this.sections.home;
-    this.showSection(this.currentSection.id);
-    this.currentSection.onEnter();
+    // sección activa (guardamos sólo el id)
+    this.currentSectionId = "home";
+
+    this.pixelSize = 20;
+    this.pixelDuration = 620; // ms
+
+    this.ninja = new Ninja(canvas);
+
+    // inicial
+    this.resizeCanvas();
+    this.canvas.style.display = "none"; // por defecto oculto
+    window.addEventListener("resize", () => this.resizeCanvas());
+
+    // mostramos la sección inicial (sin fade porque aún no interactuamos)
+    this.showSection(this.currentSectionId, true);
+    this.sections[this.currentSectionId]?.onEnter?.();
   }
 
   resizeCanvas() {
-    const canvas = document.getElementById("gameCanvas");
-
+    const canvas = this.canvas;
     const aspect = 16 / 9;
     let width = window.innerWidth;
     let height = window.innerHeight;
@@ -60,30 +63,26 @@ export class GameManager {
       height = width / aspect;
     }
 
-    // 🔹 OJO: mantenemos el tamaño lógico fijo
+    // mantenemos el tamaño lógico interno (canvas.width/height) y escalamos via CSS
     canvas.width = this.LOGICAL_WIDTH;
     canvas.height = this.LOGICAL_HEIGHT;
 
-    // 🔹 Escalado solo por CSS
     canvas.style.width = width + "px";
     canvas.style.height = height + "px";
     canvas.style.left = "50%";
     canvas.style.top = "50%";
     canvas.style.transform = "translate(-50%, -50%)";
 
-    // Ajustar side-walls
+    // side-walls
     const leftWall = document.querySelector(".side-wall.left");
     const rightWall = document.querySelector(".side-wall.right");
-    const sideWidth = (window.innerWidth - width) / 2;
-    leftWall.style.width = sideWidth + "px";
-    rightWall.style.width = sideWidth + "px";
-
-    this.scaleX = this.canvas.clientWidth / this.LOGICAL_WIDTH;
-    this.scaleY = this.canvas.clientHeight / this.LOGICAL_HEIGHT;
+    const sideWidth = Math.max(0, (window.innerWidth - width) / 2);
+    if (leftWall) leftWall.style.width = sideWidth + "px";
+    if (rightWall) rightWall.style.width = sideWidth + "px";
   }
 
   start() {
-    if (this.isRunning) return; // 🔹 evita múltiples loops
+    if (this.isRunning) return;
     this.isRunning = true;
     this.lastTime = 0;
     requestAnimationFrame(this.loop.bind(this));
@@ -94,40 +93,45 @@ export class GameManager {
   }
 
   update(deltaTime) {
+    // update game objects
     this.ninja.update(deltaTime);
 
+    // navegación automática (ejemplo)
     if (!this.isTransitioning) {
       if (this.ninja.x + this.ninja.width >= this.LOGICAL_WIDTH) {
         this.changeSection("games", "right");
       } else if (this.ninja.x <= 0) {
         this.changeSection("home", "left");
       }
-    } 
+    }
 
-  if (this.currentSection.update) {
-    this.currentSection.update(deltaTime);
+    // Llamar update de la sección si existe
+    const sectionObj = this.sections[this.currentSectionId];
+    if (sectionObj?.update) sectionObj.update(deltaTime);
   }
-}
 
   draw() {
     this.ctx.clearRect(0, 0, this.LOGICAL_WIDTH, this.LOGICAL_HEIGHT);
-    this.currentSection?.draw?.(this.ctx);
+    const sectionObj = this.sections[this.currentSectionId];
+    if (sectionObj?.draw) sectionObj.draw(this.ctx);
     this.ninja.draw(this.ctx);
+    ColliderManager.draw?.(this.ctx);
   }
 
   loop(timestamp = 0) {
     if (!this.isRunning) return;
-
     const deltaTime = Math.min((timestamp - this.lastTime) / 1000, 0.05);
     this.lastTime = timestamp;
 
     this.update(deltaTime);
     this.draw();
-    ColliderManager.draw(this.ctx);
 
     requestAnimationFrame(this.loop.bind(this));
   }
 
+  /* ----------------------
+     Pixel overlay transitions
+     ---------------------- */
   pixelFadeIn(callback) {
     const canvas = document.getElementById("pixel-overlay");
     const ctx = canvas.getContext("2d");
@@ -145,7 +149,7 @@ export class GameManager {
 
     let i = 0;
     const total = pixels.length;
-    const duration = this.pixelDuration; // ms → duración total
+    const duration = this.pixelDuration;
     const start = performance.now();
 
     const step = (now) => {
@@ -183,15 +187,13 @@ export class GameManager {
     }
     pixels.sort(() => Math.random() - 0.5);
 
-    // primero cubrir todo
+    // cubrir todo primero
     ctx.fillStyle = "black";
-    for (let p of pixels) {
-      ctx.fillRect(p.x, p.y, this.pixelSize, this.pixelSize);
-    }
+    for (let p of pixels) ctx.fillRect(p.x, p.y, this.pixelSize, this.pixelSize);
 
     let i = 0;
     const total = pixels.length;
-    const duration = this.pixelDuration; // ms → duración total
+    const duration = this.pixelDuration;
     const start = performance.now();
 
     const step = (now) => {
@@ -214,81 +216,127 @@ export class GameManager {
     requestAnimationFrame(step);
   }
 
-  changeSection(targetId, direction = null, instant = false) {
-    if (this.currentSection.id === targetId) return;
-    
-    const doChange = () => {
-      this.currentSection.onExit?.();
-      this.hideSection(this.currentSection.id);
-      if (this.currentSection.id === "games") {
-        this.resetGamesDetail();
-      }
-
-      this.currentSection = this.sections[targetId];
-      this.showSection(this.currentSection.id);
-      this.currentSection.onEnter?.();
-
-      // recolocar ninja solo si hay dirección
-      if (direction && this.isRunning) {
-        if (direction === "right") {
-          this.ninja.x = 10;
-        } else if (direction === "left") {
-          this.ninja.x = this.LOGICAL_WIDTH - this.ninja.width - 10;
-        } else {
-          this.ninja.x = this.LOGICAL_WIDTH / 2 - this.ninja.width / 2;
-        }
-        this.ninja.collider.x = this.ninja.x;
-      }
-  };
-
-    if (instant || !this.isRunning) {
-      doChange(); // 🔹 cambio sin fade
-    } else {
-      this.isTransitioning = true;
-      this.pixelFadeIn(() => {
-        doChange();
-        this.pixelFadeOut(() => {
-          this.isTransitioning = false;
-        });
-      });
-    }
-  }
-
-  showSection(id) {
+  /* ----------------------
+     Mostrar / ocultar secciones
+     ---------------------- */
+  showSection(id, immediate = false) {
     const section = document.getElementById(id);
+    if (!section) return;
+
+    // quitar hidden antes de tratar la opacidad
     section.classList.remove("hidden");
-    if (this.isRunning) {
-      section.style.transition = "none";  // 🔹 sin fade
+
+    // Si immediate o estamos en modo juego (ya hay pixel overlay), mostrar sin transición CSS
+    if (immediate || this.isRunning) {
+      section.style.transition = "none";
       section.style.opacity = "1";
     } else {
-      section.style.transition = "opacity 0.5s ease"; // 🔹 fade normal
+      section.style.transition = "opacity 0.5s ease";
+      // arrancamos desde 0 para animar a 1
+      section.style.opacity = "0";
       requestAnimationFrame(() => {
         section.style.opacity = "1";
       });
     }
   }
 
-  hideSection(id) {
+  hideSection(id, immediate = false) {
     const section = document.getElementById(id);
-    if (this.isRunning) {
-      section.classList.add("hidden"); // 🔹 cambio inmediato
+    if (!section) return;
+
+    if (immediate || this.isRunning) {
+      // ocultado inmediato (sin animación CSS)
+      section.style.transition = "none";
       section.style.opacity = "0";
+      section.classList.add("hidden");
     } else {
-      section.style.transition = "opacity 0.5s ease"; // 🔹 fade suave solo fuera del juego
+      // fade CSS
+      section.style.transition = "opacity 0.5s ease";
       section.style.opacity = "0";
       setTimeout(() => {
         section.classList.add("hidden");
-      }, 500); // duración del fade,debe coincidir con el del css
+      }, 500);
     }
   }
 
+  /* ----------------------
+     Cambio de sección centralizado
+     targetId: id del <section>
+     direction: opcional, para reposicionar ninja (solo si el juego está corriendo)
+     instant: si true fuerza cambio inmediato (sin fades)
+     ---------------------- */
+  changeSection(targetId, direction = null, instant = false) {
+    if (this.currentSectionId === targetId) return;
+
+    const prevId = this.currentSectionId;
+
+    const repositionNinjaIfNeeded = () => {
+      if (!direction || !this.isRunning) return;
+      if (direction === "right") {
+        this.ninja.x = 10;
+      } else if (direction === "left") {
+        this.ninja.x = this.LOGICAL_WIDTH - this.ninja.width - 10;
+      } else {
+        this.ninja.x = this.LOGICAL_WIDTH / 2 - this.ninja.width / 2;
+      }
+      this.ninja.collider.x = this.ninja.x;
+    };
+
+    const doSwap = () => {
+      const prevSection = document.getElementById(prevId);
+      this.pauseAllYoutube(prevSection);
+
+      this.sections[prevId]?.onExit?.();
+      this.hideSection(prevId, true);
+
+      // 🔹 Solo reseteamos detalles si vamos a games
+      if (targetId === "games") {
+        this.resetGamesDetail();
+      }
+
+      this.currentSectionId = targetId;
+      this.showSection(targetId, true);
+      this.sections[targetId]?.onEnter?.();
+
+      repositionNinjaIfNeeded();
+    };
+
+    if (instant) {
+      doSwap();
+      return;
+    }
+
+    if (this.isRunning) {
+      this.isTransitioning = true;
+      this.pixelFadeIn(() => {
+        doSwap();
+        this.pixelFadeOut(() => {
+          this.isTransitioning = false;
+        });
+      });
+    } else {
+      this.sections[prevId]?.onExit?.();
+      this.hideSection(prevId, false);
+
+      setTimeout(() => {
+        if (targetId === "games") this.resetGamesDetail();
+        this.currentSectionId = targetId;
+        this.showSection(targetId, false);
+        this.sections[targetId]?.onEnter?.();
+      }, 500);
+    }
+  }
+
+  /* ----------------------
+     Start / stop juego y toggle
+     ---------------------- */
   startGame() {
     this.resizeCanvas();
-    document.body.style.overflow = "hidden"; 
+    document.body.style.overflow = "hidden";
     document.querySelectorAll(".side-wall").forEach(w => w.style.display = "block");
     this.canvas.style.display = "block";
-    this.pixelFadeOut(); 
-    this.start();        
+    this.pixelFadeOut(); // dejamos la pantalla limpia
+    this.start();
   }
 
   stopGame() {
@@ -297,38 +345,61 @@ export class GameManager {
       this.canvas.style.display = "none";
       document.querySelectorAll(".side-wall").forEach(w => w.style.display = "none");
       this.pixelFadeOut();
-      document.body.style.overflow = "auto";  // Restaurar scroll
+      document.body.style.overflow = "auto";
     });
   }
 
   toggleGame(onToggled) {
     if (this.isRunning) {
-      // 🔹 DESACTIVAR juego
+      // DESACTIVAR juego
       this.pixelFadeIn(() => {
         this.stop();
         this.canvas.style.display = "none";
         document.querySelectorAll(".side-wall").forEach(w => w.style.display = "none");
         this.pixelFadeOut(() => {
-            if (onToggled) onToggled(false);
-          });
+          if (onToggled) onToggled(false);
+        });
       });
     } else {
-      // 🔹 ACTIVAR juego
-        this.pixelFadeIn(() => {
-          this.canvas.style.display = "block";
-          document.querySelectorAll(".side-wall").forEach(w => w.style.display = "block");
-          this.start();
-          this.pixelFadeOut(() => {
-            if (onToggled) onToggled(true);
-          });
+      // ACTIVAR juego
+      this.pixelFadeIn(() => {
+        this.canvas.style.display = "block";
+        document.querySelectorAll(".side-wall").forEach(w => w.style.display = "block");
+        this.start();
+        this.pixelFadeOut(() => {
+          if (onToggled) onToggled(true);
+        });
       });
     }
   }
 
+  /* ----------------------
+     Helpers
+     ---------------------- */
   resetGamesDetail() {
+    // 🔹 Solo cerrar detalles, NO tocar el grid
     document.querySelectorAll(".game-detail").forEach(sec => {
       sec.classList.add("hidden");
       sec.style.opacity = "0";
+    });
+  }
+
+  pauseYoutube(iframe) {
+    try {
+      iframe.contentWindow.postMessage(
+        '{"event":"command","func":"pauseVideo","args":""}', '*'
+      );
+    } catch (e) {
+      console.warn("No se pudo pausar YouTube", e);
+    }
+  }
+
+  pauseAllYoutube(section) {
+    if (!section) return;
+    section.querySelectorAll("iframe").forEach(iframe => {
+      if (iframe.src.includes("youtube.com/embed")) {
+        this.pauseYoutube(iframe);
+      }
     });
   }
 }
