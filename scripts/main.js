@@ -22,9 +22,18 @@ window.addEventListener("resize", checkWindowSize);
 checkWindowSize();
 
 toggleBtn.addEventListener("click", () => {
-  toggleBtn.blur(); // 🔹 Quitar focus inmediato
+  toggleBtn.blur();
   game.toggleGame((isRunning) => {
     toggleBtn.textContent = isRunning ? "❌ Desactivar Juego" : "🎮 Activar Juego";
+
+    // 🔹 Aquí sí tenemos el valor correcto
+    if (isRunning) {
+      document.body.classList.add("game-active");
+      document.body.classList.remove("html-mode");
+    } else {
+      document.body.classList.remove("game-active");
+      document.body.classList.add("html-mode");
+    }
   });
 });
 
