@@ -86,7 +86,7 @@ section {
   opacity: 0;
   pointer-events: none;
   position: absolute;
-  display: none !important;
+  /*display: none !important;*/
 }
 
 #home h1 {
@@ -453,4 +453,103 @@ html, body {
     flex-direction: column;
     align-items: center;
   }
+}
+
+#contact {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 3rem 1rem;
+}
+
+.contact-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 900px;
+}
+
+/* --- Contact card (arriba) --- */
+.contact-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 2rem 3rem;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  animation: floatCard 6s ease-in-out infinite;
+}
+
+.contact-card h2 {
+  font-family: 'Orbitron', sans-serif;
+  color: #5ca0df;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.contact-card p {
+  color: #eee;
+  margin-bottom: 1.5rem;
+}
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.social-links a {
+  background: rgba(92, 160, 223, 0.15);
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.social-links a:hover {
+  background: #5ca0df;
+  transform: translateY(-4px) scale(1.05);
+}
+
+/* --- Skills card (debajo) --- */
+.skills-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+.skills-card h3 {
+  color: #222; /* texto oscuro para contraste */
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+}
+
+.skill img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(0,0,0,0.6));
+  transition: transform 0.3s, filter 0.3s;
+}
+
+.skill img:hover {
+  transform: scale(1.2) rotate(-5deg);
+  filter: drop-shadow(0 0 12px #5ca0df);
+}
+
+/* Animación tarjeta */
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
