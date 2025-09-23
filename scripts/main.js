@@ -70,3 +70,34 @@ mainCard.addEventListener('mouseenter', () => {
 mainCard.addEventListener('mouseleave', () => {
   sideCards.forEach(c => c.classList.remove('visible'));
 });
+
+// Carrusel
+document.addEventListener("DOMContentLoaded", () => {
+  const track = document.querySelector('.games-carousel .carousel-track');
+  const items = document.querySelectorAll('.games-carousel .carousel-item');
+  const prevBtn = document.querySelector('.games-carousel .prev');
+  const nextBtn = document.querySelector('.games-carousel .next');
+
+  let currentIndex = 0;
+
+  function updateCarousel() {
+    const offset = -(currentIndex * 100);
+    track.style.transform = `translateX(${offset}%)`;
+  }
+
+  nextBtn.addEventListener('click', () => {
+    currentIndex++;
+    if (currentIndex >= items.length) {
+      currentIndex = 0; // vuelve al inicio
+    }
+    updateCarousel();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    currentIndex--;
+    if (currentIndex < 0) {
+      currentIndex = items.length - 1; // vuelve al final
+    }
+    updateCarousel();
+  });
+});

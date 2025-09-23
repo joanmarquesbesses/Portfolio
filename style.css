@@ -165,7 +165,7 @@ html, body {
 /* Grid de juegos */
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
   padding: 2rem;
   justify-items: center;
@@ -176,11 +176,12 @@ html, body {
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: clamp(220px, 20vw, 320px); /* 👈 un poco más grande */
+  width: clamp(330px, 30vw, 480px); /* 👈 un poco más grande */
   aspect-ratio: 16 / 9; /* 👈 rectangular horizontal, tipo portada */
   overflow: hidden;
   position: relative;
   padding: 0; /* quita espacio interno */
+  flex: 0 0 clamp(220px, 20vw, 320px);
 }
 
 .game-card:hover {
@@ -601,4 +602,46 @@ html, body {
   .side-card {
     max-width: 90%;
   }
+}
+
+.games-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+  width: 100%;
+}
+
+.carousel-item {
+  min-width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.carousel-track-wrapper {
+  overflow: hidden;
+  flex: 1;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 2rem; /* espacio entre cards */
+  transition: transform 0.5s ease;
+  padding: 2rem;
+}
+
+.carousel-btn {
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  z-index: 10;
+  transition: background 0.3s;
+}
+.carousel-btn:hover {
+  background: rgba(255,255,255,0.3);
 }
