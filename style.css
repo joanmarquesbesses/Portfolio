@@ -604,34 +604,25 @@ html, body {
   }
 }
 
-.games-carousel {
+.games-carousel .carousel-item {
+  flex: 0 0 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 1rem;
-  position: relative;
+}
+
+.games-carousel .carousel-track-wrapper {
+  overflow: hidden;
   width: 100%;
 }
 
-.carousel-item {
-  min-width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.carousel-track-wrapper {
-  overflow: hidden;
-  flex: 1;
-}
-
-.carousel-track {
+.games-carousel .carousel-track {
   display: flex;
   gap: 2rem; /* espacio entre cards */
   transition: transform 0.5s ease;
   padding: 2rem;
 }
 
-.carousel-btn {
+.games-carousel .carousel-btn {
   background: rgba(0,0,0,0.6);
   color: white;
   border: none;
@@ -642,6 +633,6 @@ html, body {
   z-index: 10;
   transition: background 0.3s;
 }
-.carousel-btn:hover {
+.games-carousel .carousel-btn:hover {
   background: rgba(255,255,255,0.3);
 }
