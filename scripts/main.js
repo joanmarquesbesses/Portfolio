@@ -60,3 +60,13 @@ document.querySelectorAll("#navbar button").forEach(btn => {
 
 // por defecto, dejamos el body en modo html (permitir scroll si hace falta)
 document.body.classList.add("html-mode");
+
+const mainCard = document.querySelector('.main-card');
+const sideCards = document.querySelectorAll('.side-card');
+
+mainCard.addEventListener('mouseenter', () => {
+  sideCards.forEach(c => c.classList.add('visible'));
+});
+mainCard.addEventListener('mouseleave', () => {
+  sideCards.forEach(c => c.classList.remove('visible'));
+});

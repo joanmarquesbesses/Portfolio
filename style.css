@@ -523,6 +523,7 @@ html, body {
   padding: 2rem;
   text-align: center;
   box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  animation: floatCard 6s ease-in-out infinite;
 }
 .skills-card h3 {
   color: #222; /* texto oscuro para contraste */
@@ -552,4 +553,52 @@ html, body {
 @keyframes floatCard {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
+}
+
+.home-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  position: relative;
+}
+
+/* Tarjetas laterales (inicialmente ocultas) */
+.side-card {
+  background: rgba(0, 0, 0, 0.65);
+  padding: 1rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  max-width: 300px;
+  text-align: center;
+  color: #eee;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none; /* no molestan al hover */
+}
+
+.side-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.side-card p,
+.side-card li,
+.side-card span {
+  font-size: 1.2rem; /* o lo que prefieras */
+  line-height: 1.4;
+  color: #ddd; /* opcional, para que destaque sobre el fondo */
+}
+
+/* Para pantallas pequeñas → apiladas */
+@media (max-width: 900px) {
+  .home-wrapper {
+    flex-direction: column;
+  }
+  .side-card {
+    max-width: 90%;
+  }
 }
