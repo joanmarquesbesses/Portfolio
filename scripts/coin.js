@@ -43,7 +43,6 @@ export class Coin {
     if (this.collected) return;
     this.collected = true;
     ColliderManager.removeCollider(this.collider);
-    console.log("Moneda recogida!");
     // aquí puedes sumar puntuación, sonido, etc.
   }
 

@@ -41,7 +41,6 @@ export class Collider {
       this.direction = -1; // subir
     }
 
-    console.log(this.y);
   }
 
   // Ejemplo de método de colisión
