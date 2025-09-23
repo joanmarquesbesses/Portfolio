@@ -80,9 +80,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentIndex = 0;
 
+  function updateVisibleCarouselItems(index) {
+    items.forEach((item, i) => {
+      const gifs = item.querySelectorAll("img.gif-img");
+      if (i === index) {
+        gifs.forEach(img => {
+          img.style.display = "block"; // activa los gifs visibles
+          if (img.dataset.src && !img.src) {
+            img.src = img.dataset.src; // lazy-load si aún no se había cargado
+          }
+        });
+      } else {
+        gifs.forEach(img => {
+          img.style.display = "none"; // pausa los demás
+        });
+      }
+    });
+  }
+
   function updateCarousel() {
     const offset = -(currentIndex * 100);
     track.style.transform = `translateX(${offset}%)`;
+    updateVisibleCarouselItems(currentIndex);
   }
 
   nextBtn.addEventListener('click', () => {
@@ -100,4 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     updateCarousel();
   });
+
+  // al cargar, muestra solo la primera slide
+  updateVisibleCarouselItems(currentIndex);
 });

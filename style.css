@@ -606,6 +606,7 @@ html, body {
   flex: 0 0 100%;
   display: flex;
   justify-content: center;
+  contain: layout paint;
 }
 
 .games-carousel .carousel-track-wrapper {
@@ -619,6 +620,7 @@ html, body {
   transition: transform 0.5s ease;
   padding: 2rem;
   will-change: transform;
+  transform: translateZ(0);
 }
 
 .games-carousel .carousel-btn {
