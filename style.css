@@ -303,6 +303,12 @@ html, body {
   }
 }
 
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: auto; /* deja usar scroll horizontal en móvil */
+  }
+}
+
 /* Sección detalle de un juego */
 .game-detail {
   flex-direction: column;
@@ -466,9 +472,19 @@ html, body {
 
 #contact {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  padding: 3rem 1rem;
+  align-items: center;
+  text-align: center;
+  min-height: calc(100vh - 50px);
+  width: 100%;
+  margin: 0;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+#contact > *:last-child {
+  margin-bottom: 0;
 }
 
 .contact-wrapper {
@@ -488,6 +504,7 @@ html, body {
   text-align: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.6);
   animation: floatCard 6s ease-in-out infinite;
+  overflow-anchor: none;
 }
 
 .contact-card h2 {
@@ -533,6 +550,7 @@ html, body {
   text-align: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   animation: floatCard 6s ease-in-out infinite;
+  overflow-anchor: none;
 }
 .skills-card h3 {
   color: #222; /* texto oscuro para contraste */
