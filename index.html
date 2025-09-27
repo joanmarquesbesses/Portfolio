@@ -12,7 +12,8 @@
   <nav id="navbar">
     <button data-section="home">Home</button>
     <button data-section="games">Games</button>
-    <button data-section="contact">Contacto</button>
+    <button data-section="engines">Engines</button>
+    <button data-section="contact">Contact</button>
   </nav>
 
   <section id="home" class="hero">
@@ -136,7 +137,13 @@
             <img src="assets/WarHammer/WarHammer.gif" alt="gif gameplay" loading="lazy">
           </div>
           <div class="carousel-item">
-            <img src="assets/WarHammer/title.png" alt="screenshot">
+            <img src="assets/WarHammer/MainMenu.GIF" alt="screenshot">
+          </div>
+          <div class="carousel-item">
+            <img src="assets/WarHammer/scripting.gif" alt="screenshot">
+          </div>
+          <div class="carousel-item">
+            <img src="assets/WarHammer/LoseScreen2Comp.png" alt="screenshot">
           </div>
         </div>
         <button class="carousel-btn prev">‹</button>
@@ -174,7 +181,7 @@
         <div class="carousel-track">
           <div class="carousel-item">
             <iframe 
-              src="https://www.youtube.com/embed/eRoSj9UPF5I?enablejsapi=1"
+              src="https://www.youtube.com/embed/mHNnbUDT1uc?enablejsapi=1"
               frameborder="0"
               allowfullscreen>
             </iframe>
@@ -183,7 +190,10 @@
             <img src="assets/Controlled/Controlled.gif" alt="gif gameplay" loading="lazy">
           </div>
           <div class="carousel-item">
-            <img src="assets/Controlled/Controlled.png" alt="screenshot">
+            <img src="assets/Controlled/weapons.gif" alt="screenshot">
+          </div>
+          <div class="carousel-item">
+            <img src="assets/Controlled/upgrades.gif" alt="gif gameplay" loading="lazy">
           </div>
         </div>
         <button class="carousel-btn prev">‹</button>
@@ -205,6 +215,152 @@
         <li>Weapon and Gadgets system.</li>
         <li>Upgrade system.</li>
         <li>Inventory system</li>
+      </ul>
+      <button class="back-btn">← Back</button>
+    </div>
+  </section>
+
+  <section id="skyfox" class="hidden game-detail">
+    <h2 class="game-title">Skyfox</h2>
+
+    <div class="game-content">
+      <!-- Carrusel -->
+      <div class="carousel">
+        <div class="carousel-track">
+          <div class="carousel-item">
+            <iframe 
+              src="https://www.youtube.com/embed/Ugy9BDhPAHQ?enablejsapi=1"
+              frameborder="0"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="carousel-item">
+            <img src="assets/SkyFox/mechanics.gif" alt="gif gameplay" loading="lazy">
+          </div>
+          <div class="carousel-item">
+            <img src="assets/SkyFox/upgrades.gif" alt="screenshot">
+          </div>
+          <div class="carousel-item">
+            <img src="assets/SkyFox/SkyFox.png" alt="gif gameplay" loading="lazy">
+          </div>
+        </div>
+        <button class="carousel-btn prev">‹</button>
+        <button class="carousel-btn next">›</button>
+      </div>
+
+      <div class="game-description">
+         <p>
+          Sky Fox is a dropper game made with Unity, where your goal is to take our friend Roxy to the end of a level full of obstacles.
+          The more distance you fall, the more points you get.
+          This project was created for the "Brackeys Game Jam 2023.2".
+          The theme was "Diving Deeper". That's why our fox needs to skydive until reaching the lowest place in the level.
+        </p>
+      </div>
+    </div>
+    <div class="game-extra">
+      <h3>Mi job:</h3>
+      <ul>
+        <li>Player Mechanics.</li>
+        <li>Upgrade system.</li>
+        <li>Save and Load system.</li>
+        <li>Game feel and polish.</li>
+      </ul>
+      <button class="back-btn">← Back</button>
+    </div>
+  </section>
+
+  <section id="engines" class="hidden">
+    <div class="games-grid"> <!-- usamos el mismo grid -->
+      
+      <div class="game-card" data-target="hawkengine">
+        <div class="img-wrapper">
+          <img src="assets/Engines/HawkEngine.png" alt="Hawk Engine" class="static-img">
+          <img src="assets/Engines/HawkEngine.gif" alt="Hawk Engine gif" class="gif-img" loading="lazy">
+        </div>
+      </div>
+
+      <div class="game-card" data-target="runic2d">
+        <div class="img-wrapper">
+          <img src="assets/Engines/MonoGame.png" alt="MonoGame Engine" class="static-img">
+          <img src="assets/Engines/MonoGame.gif" alt="MonoGame Engine gif" class="gif-img" loading="lazy">
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="hawkengine" class="hidden game-detail">
+    <h2 class="game-title">Hawk Engine</h2>
+
+    <div class="game-content">
+      <div class="carousel">
+        <div class="carousel-track">
+          <div class="carousel-item">
+            <img src="assets/Engines/HawkEngine.gif" alt="Hawk Engine gif">
+          </div>
+          <div class="carousel-item">
+            <img src="assets/Engines/HawkEngine.png" alt="Hawk Engine screenshot">
+          </div>
+        </div>
+        <button class="carousel-btn prev">‹</button>
+        <button class="carousel-btn next">›</button>
+      </div>
+
+      <div class="game-description">
+        <p>
+          Hawk Engine es un motor 3D propio desarrollado en C++ con OpenGL Moderno.
+          Incluye un editor con ImGui, sistema de recursos, renderizado avanzado y scripting.
+          Fue utilizado para el desarrollo de *Warhammer 40,000: Blood and Thunder*.
+        </p>
+      </div>
+    </div>
+
+    <div class="game-extra">
+      <h3>Mi trabajo:</h3>
+      <ul>
+        <li>Gestor de recursos (Resource Manager).</li>
+        <li>UI System desde cero.</li>
+        <li>Implementación de enemigos y cámara.</li>
+        <li>Transición a OpenGL Moderno.</li>
+        <li>Integración de Optick y build profiling.</li>
+      </ul>
+      <button class="back-btn">← Back</button>
+    </div>
+  </section>
+
+  <!-- 🔹 Runic2D Engine Detail -->
+  <section id="runic2d" class="hidden game-detail">
+    <h2 class="game-title">Mini Engine con MonoGame</h2>
+
+    <div class="game-content">
+      <div class="carousel">
+        <div class="carousel-track">
+          <div class="carousel-item">
+            <img src="assets/Engines/MonoGame.gif" alt="MonoGame Engine gif">
+          </div>
+          <div class="carousel-item">
+            <img src="assets/Engines/MonoGame.png" alt="MonoGame Engine screenshot">
+          </div>
+        </div>
+        <button class="carousel-btn prev">‹</button>
+        <button class="carousel-btn next">›</button>
+      </div>
+
+      <div class="game-description">
+        <p>
+          Un mini engine 2D creado con MonoGame, enfocado en batch rendering y gestión optimizada de recursos.
+          Sirvió como prototipo y prueba de arquitectura para el TFG, buscando balance entre flexibilidad y rendimiento.
+        </p>
+      </div>
+    </div>
+
+    <div class="game-extra">
+      <h3>Mi trabajo:</h3>
+      <ul>
+        <li>Sistema de batch rendering.</li>
+        <li>Gestión de assets y recursos en paralelo.</li>
+        <li>Arquitectura base para 2D/3D.</li>
+        <li>Demo jugable como prototipo.</li>
       </ul>
       <button class="back-btn">← Back</button>
     </div>

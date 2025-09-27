@@ -8,11 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn("GameManager (window.game) no está disponible — asegúrate de que main.js se carga antes que gameSections.js");
   }
 
-  const gamesSection = document.getElementById("games");
-  if (!gamesSection) {
-    console.warn("No se encontró sección #games");
-  }
-
   // Grid -> detalle: delegamos la navegación al GameManager
   document.querySelectorAll(".game-card").forEach(card => {
     card.addEventListener("click", () => {
@@ -28,8 +23,15 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".back-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      // volvemos a 'games'
-      game.changeSection("games", "left", !game.isRunning);
+
+      // Detectar si estamos en un game-detail o en un engine-detail
+      const parentSection = btn.closest("section");
+      let returnTo = "games";
+      if (parentSection && parentSection.id.includes("engine")) {
+        returnTo = "engines";
+      }
+
+      game.changeSection(returnTo, "left", !game.isRunning);
     });
   });
 
