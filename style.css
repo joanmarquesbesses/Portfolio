@@ -147,6 +147,14 @@ section {
   object-fit: cover;
 }
 
+.main-card .subtitle::after {
+  content: "(Hover to learn more)";
+  display: block;
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-top: 0.5rem;
+}
+
 html, body {
   margin: 0;
   padding: 0;
