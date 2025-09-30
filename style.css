@@ -423,6 +423,7 @@ html, body {
   max-width: 600px;
   margin: 0 auto;
   color: #ccc;
+  font-family: "Segoe UI", sans-serif;
   font-size: clamp(0.9rem, 1.3vw, 1rem);
   line-height: 1.5;
   text-align: center; /* 👈 opcional para que quede bonito */
@@ -440,18 +441,16 @@ html, body {
 
 .game-extra li {
   background: rgba(255, 255, 255, 0.05);
-  border-left: 4px solid #5ca0df;
   padding: 0.6rem 1rem;
   border-radius: 8px;
   font-size: 1rem;
   color: #eee;
   box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-  text-align: left;
+  text-align: center;
   transition: transform 0.2s, box-shadow 0.3s;
 }
 
 .game-extra li:hover {
-  transform: translateX(5px);
   box-shadow: 0 4px 10px rgba(0,0,0,0.4);
 }
 
@@ -587,13 +586,17 @@ html, body {
   width: 60px;
   height: 60px;
   object-fit: contain;
-  filter: drop-shadow(0 0 5px rgba(0,0,0,0.6));
+  filter: drop-shadow(0 0 2.5px rgba(0,0,0,0.6));
   transition: transform 0.3s, filter 0.3s;
 }
 
 .skill img:hover {
   transform: scale(1.2) rotate(-5deg);
   filter: drop-shadow(0 0 12px #5ca0df);
+}
+
+.skills-card .skills-grid + .skills-grid {
+  margin-top: 0.5rem; /* ajusta el espacio entre filas */
 }
 
 /* Animación tarjeta */
