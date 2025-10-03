@@ -16,12 +16,9 @@ export class Home {
 
   onEnter() {
     // 🔹 Añadimos un collider en la esquina
-    const c = new Collider(200, 770, 100, 100);  
-    this.colliders.push(c);
-    this.colliders.forEach(collider => ColliderManager.addCollider(collider));
-
-    const coin = new Coin(650, 400, "./assets/coin.png");
-    this.coins.push(coin);
+    //const c = new Collider(200, 770, 100, 100);  
+    //this.colliders.push(c);
+    //this.colliders.forEach(collider => ColliderManager.addCollider(collider));
 
     const main = document.querySelector("#home .card");
     if (main) {
@@ -51,13 +48,23 @@ export class Home {
       );
     }
 
-    const platform = new Collider(300, 400, 200, 20, "solid");
+    const platform = new Collider(100, 800, 200, 20, "solid");
     platform.isMoving = true;
-    platform.speedY = 50; // píxeles por segundo
-    platform.minY = 400;
-    platform.maxY = 600;
+    platform.speedY = 150; // píxeles por segundo
+    platform.minY = 250;
+    platform.maxY = 950;
     this.movingPlatform.push(platform);
+
+    const platform1 = new Collider(1650, 800, 200, 20, "solid");
+    platform1.isMoving = true;
+    platform1.speedY = 150; // píxeles por segundo
+    platform1.minY = 250;
+    platform1.maxY = 950;
+    this.movingPlatform.push(platform1);
     this.movingPlatform.forEach(p => ColliderManager.addCollider(p));
+
+    const coin = new Coin(this.htmlColliderMain.x + this.htmlColliderMain.w/2, this.htmlColliderMain.y - 100, "./assets/coin.png");
+    this.coins.push(coin);
   }
 
   onExit() {
@@ -79,15 +86,12 @@ export class Home {
       this.htmlColliderRight = null;
     }
 
-    this.coins = [];
 
     this.movingPlatform.forEach(p => ColliderManager.removeCollider(p));
     this.movingPlatform = [];
   }
 
   update(deltaTime) {
-    this.coins.forEach(c => c.update(deltaTime));
-
     if (this.htmlColliderMain) {
       this.updateHtmlCollider(".card", this.htmlColliderMain);
     }
@@ -117,6 +121,8 @@ export class Home {
     }
 
     this.movingPlatform.forEach(p => p.update(deltaTime));
+    this.updateCoinPosition();
+    this.coins.forEach(c => c.update(deltaTime));
   }
 
   updateHtmlCollider(selector, collider) {
@@ -151,6 +157,14 @@ export class Home {
       window.getComputedStyle(el).opacity !== "0" &&
       window.getComputedStyle(el).visibility !== "hidden"
     );
+  }
+
+  updateCoinPosition(){
+    if(!this.coins.at(0).collected){
+      const coin = this.coins.at(0);
+      this.coins.at(0).setPosition((this.htmlColliderMain.x + this.htmlColliderMain.w/2) - coin.width/2, 
+      (this.htmlColliderMain.y - coin.height - 50));
+    }
   }
 
   draw(ctx) {

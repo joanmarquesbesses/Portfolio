@@ -18,7 +18,7 @@ export class Ninja {
 
     this.speed = 200; // pixels por segundo
     this.jumpForce = -800; // fuerza del salto
-    this.gravity = 1000; // gravedad
+    this.gravity = 2000; // gravedad
 
     this.sprite = new Image();
     this.sprite.src = "./assets/ninja-pixilart.png";

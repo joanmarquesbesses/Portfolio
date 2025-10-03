@@ -6,8 +6,6 @@ export class Coin {
   constructor(x, y, spriteSheet) {
     this.x = x;
     this.y = y;
-    this.width = 16;  // ajusta al tamaño de tu sprite
-    this.height = 16;
 
     this.sprite = new Image();
     this.sprite.src = spriteSheet;
@@ -44,6 +42,14 @@ export class Coin {
     this.collected = true;
     ColliderManager.removeCollider(this.collider);
     // aquí puedes sumar puntuación, sonido, etc.
+  }
+
+  setPosition(x, y) {
+    this.x = x;
+    this.y = y;
+    // Actualizar la posición del collider
+    this.collider.x = this.x;
+    this.collider.y = this.y;
   }
 
   update(deltaTime) {
