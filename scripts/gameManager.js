@@ -1,6 +1,7 @@
 // scripts/gameManager.js
 import { Home } from "./sections/Home.js";
 import { Games } from "./sections/Games.js";
+import { Engines } from "./sections/Engines.js";
 import { Contact } from "./sections/Contact.js";
 import { Ninja } from "./ninja.js";
 import { ColliderManager } from "./colliderManager.js";
@@ -27,6 +28,7 @@ export class GameManager {
     this.sections = {
       home: new Home(this),
       games: new Games(this),
+      engines: new Engines(this),
       contact: new Contact(this),
       // no registres aquí las secciones detalle si no quieres; el manager trabaja por ID
     };
