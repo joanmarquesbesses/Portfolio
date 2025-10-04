@@ -7,11 +7,12 @@ export class Home {
     this.id = "home";
     this.game = game;
     this.colliders = [];
-    this.coins = [];
+    this.coin = null;
     this.htmlColliderMain = null;
     this.htmlColliderLeft = null;
     this.htmlColliderRight = null;
     this.movingPlatform = [];
+    this.createCoin = true;
   }
 
   onEnter() {
@@ -48,7 +49,7 @@ export class Home {
       );
     }
 
-    const platform = new Collider(100, 800, 200, 20, "solid");
+    const platform = new Collider(75, 800, 200, 20, "solid");
     platform.isMoving = true;
     platform.speedY = 150; // píxeles por segundo
     platform.minY = 250;
@@ -63,8 +64,13 @@ export class Home {
     this.movingPlatform.push(platform1);
     this.movingPlatform.forEach(p => ColliderManager.addCollider(p));
 
-    const coin = new Coin(this.htmlColliderMain.x + this.htmlColliderMain.w/2, this.htmlColliderMain.y - 100, "./assets/coin.png");
-    this.coins.push(coin);
+    if(this.coin === null && this.createCoin){
+      const coin = new Coin(this.htmlColliderMain.x + this.htmlColliderMain.w/2, this.htmlColliderMain.y - 100, "./assets/coin.png");
+      this.coin = coin;
+      this.createCoin = false;
+    }else if(this.coin != null){
+      if(!this.coin.collected) this.coin.collider.active = true;
+    }
   }
 
   onExit() {
@@ -86,9 +92,12 @@ export class Home {
       this.htmlColliderRight = null;
     }
 
-
     this.movingPlatform.forEach(p => ColliderManager.removeCollider(p));
     this.movingPlatform = [];
+
+    if (this.coin != null) {
+      this.coin.collider.active = false;
+    }
   }
 
   update(deltaTime) {
@@ -121,8 +130,12 @@ export class Home {
     }
 
     this.movingPlatform.forEach(p => p.update(deltaTime));
-    this.updateCoinPosition();
-    this.coins.forEach(c => c.update(deltaTime));
+
+    if(this.coin != null){
+      this.coin.update(deltaTime);
+      if(this.coin.collected) this.coin = null;
+      else this.updateCoinPosition();
+    }
   }
 
   updateHtmlCollider(selector, collider) {
@@ -160,15 +173,20 @@ export class Home {
   }
 
   updateCoinPosition(){
-    if(!this.coins.at(0).collected){
-      const coin = this.coins.at(0);
-      this.coins.at(0).setPosition((this.htmlColliderMain.x + this.htmlColliderMain.w/2) - coin.width/2, 
-      (this.htmlColliderMain.y - coin.height - 50));
-    }
+    this.coin.setPosition((this.htmlColliderMain.x + this.htmlColliderMain.w/2) - this.coin.width/2, 
+    (this.htmlColliderMain.y - this.coin.height - 50));
   }
 
   draw(ctx) {
-    this.coins.forEach(c => c.draw(ctx));
+    ctx.save();
+    ctx.fillStyle = "rgba(100, 200, 255, 0.8)"; // color visible para debug
+    this.movingPlatform.forEach(p => {
+      ctx.fillRect(p.x, p.y, p.width, p.height);
+    });
+    ctx.restore();
+
+    if(this.coin === null) return;
+    this.coin.draw(ctx);
   }
   
 }

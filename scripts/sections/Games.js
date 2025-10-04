@@ -1,14 +1,47 @@
+import { ColliderManager } from "../colliderManager.js";
+import { Collider } from "../collider.js";
+import { Coin } from "../coin.js";
+
 export class Games {
   constructor(game) {
     this.id = "games";
     this.game = game;
+    this.movingPlatform = [];
   }
 
   onEnter() {
-    console.log("Entrando en Games");
+    const platform = new Collider(75, 800, 200, 20, "solid");
+    platform.isMoving = true;
+    platform.speedY = 150; // píxeles por segundo
+    platform.minY = 250;
+    platform.maxY = 950;
+    this.movingPlatform.push(platform);
+
+    const platform1 = new Collider(1650, 800, 200, 20, "solid");
+    platform1.isMoving = true;
+    platform1.speedY = 150; // píxeles por segundo
+    platform1.minY = 250;
+    platform1.maxY = 950;
+    this.movingPlatform.push(platform1);
+    this.movingPlatform.forEach(p => ColliderManager.addCollider(p));
   }
 
   onExit() {
-    console.log("Saliendo de Games");
+    this.movingPlatform.forEach(p => ColliderManager.removeCollider(p));
+    this.movingPlatform = [];
   }
+
+  update(deltaTime) {
+    this.movingPlatform.forEach(p => p.update(deltaTime));
+  }
+
+  draw(ctx) {
+    ctx.save();
+    ctx.fillStyle = "rgba(100, 200, 255, 0.8)"; // color visible para debug
+    this.movingPlatform.forEach(p => {
+      ctx.fillRect(p.x, p.y, p.width, p.height);
+    });
+    ctx.restore();
+  }
+
 }

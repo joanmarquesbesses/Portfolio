@@ -12,6 +12,8 @@ export class Collider {
     this.minY = y;       
     this.maxY = y;
     this.direction = 1;
+
+    this.active = true; // para desactivar sin eliminar
   }
 
   // 🔹 Aliases: width <-> w, height <-> h
@@ -45,6 +47,7 @@ export class Collider {
 
   // Ejemplo de método de colisión
   intersects(x, y, w, h) {
+    if (!this.active) return false;
     return (
       x < this.x + this._w &&
       x + w > this.x &&

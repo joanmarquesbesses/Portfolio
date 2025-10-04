@@ -35,6 +35,7 @@ export class ColliderManager {
     ctx.save();
     ctx.lineWidth = 2;
     for (let c of this.colliders) {
+      if (!c.active) continue;
       if (c.type === "solid") {
         ctx.strokeStyle = "red";
         ctx.strokeRect(c.x, c.y, c.w, c.h);
