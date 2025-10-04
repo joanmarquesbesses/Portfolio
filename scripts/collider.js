@@ -8,9 +8,12 @@ export class Collider {
     this.isTrigger = isTrigger;
 
     this.isMoving = false;
-    this.speedY = 0;       
+    this.speedY = 0;
+    this.speedX = 0;       
     this.minY = y;       
     this.maxY = y;
+    this.minX = x;
+    this.maxX = x;
     this.direction = 1;
 
     this.active = true; // para desactivar sin eliminar
@@ -32,17 +35,29 @@ export class Collider {
   update(deltaTime) {
     if (!this.isMoving) return;
 
-    this.y += this.speedY * this.direction * deltaTime;
+    if (this.speedY !== 0) {
+      this.y += this.speedY * this.direction * deltaTime;
 
-    // Rebotar en los límites
-    if (this.y <= this.minY) {
-      this.y = this.minY;
-      this.direction = 1; // bajar
-    } else if (this.y >= this.maxY) {
-      this.y = this.maxY;
-      this.direction = -1; // subir
+      if (this.y <= this.minY) {
+        this.y = this.minY;
+        this.direction = 1; // bajar
+      } else if (this.y >= this.maxY) {
+        this.y = this.maxY;
+        this.direction = -1; // subir
+      }
     }
 
+    if (this.speedX !== 0) {
+      this.x += this.speedX * this.direction * deltaTime;
+
+      if (this.x <= this.minX) {
+        this.x = this.minX;
+        this.direction = 1; // derecha
+      } else if (this.x >= this.maxX) {
+        this.x = this.maxX;
+        this.direction = -1; // izquierda
+      } 
+    }
   }
 
   // Ejemplo de método de colisión

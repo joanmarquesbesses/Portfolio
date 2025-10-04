@@ -102,24 +102,38 @@ export class Ninja {
     const vHit = ColliderManager.checkCollision(this.collider.x, newY, this.width, this.height, this.collider.type);
     if (!vHit) {
       this.collider.y = newY;
-      // probe de 1px para saber si estamos apoyados
-      const probe = ColliderManager.checkCollision(this.collider.x, this.collider.y + 1, this.width, this.height, this.collider.type);
-      this.onGround = !!probe || this.collider.y >= floorY - 0.5;
+
+      // probe de 2px para saber si estamos apoyados sobre algo
+      const probe = ColliderManager.checkCollision(this.collider.x, this.collider.y + 2, this.width, this.height, this.collider.type);
       this.groundCollider = probe;
+
+      // suelo base o plataforma
+      this.onGround = !!probe || this.collider.y >= floorY - 0.5;
     } else {
-      if (this.velY > 0) {               // cayendo -> suelo
+      if (this.velY > 0) { // cayendo
         this.collider.y = vHit.y - this.height - 0.01;
         this.velY = 0;
         this.onGround = true;
-      } else if (this.velY < 0) {        // subiendo -> techo
+        this.groundCollider = vHit;
+      } else if (this.velY < 0) { // subiendo
         this.collider.y = vHit.y + vHit.h + 0.01;
         this.velY = 0;
       }
     }
 
     if (this.onGround && this.groundCollider?.isMoving) {
-      this.collider.y += this.groundCollider.speedY * this.groundCollider.direction * deltaTime;
-      this.y = this.collider.y; // mantener sincronizado
+      const p = this.groundCollider;
+
+      // solo mover con la plataforma si no estamos saltando (velY ≈ 0)
+      if (Math.abs(this.velY) < 1) {
+        const dx = (p.speedX || 0) * p.direction * deltaTime;
+        const dy = (p.speedY || 0) * p.direction * deltaTime;
+
+        this.collider.x += dx;
+        this.collider.y += dy;
+        this.x += dx;
+        this.y += dy;
+      }
     }
     
     // sincronizar para dibujar
