@@ -13,9 +13,17 @@ export class Engines {
     const platform = new Collider(75, 950, 200, 20, "solid");
     platform.isMoving = true;
     platform.speedY = 150; // píxeles por segundo
-    platform.minY = 200;
+    platform.minY = 350;
     platform.maxY = 950;
     this.movingPlatform.push(platform);
+
+    const platform1 = new Collider(1400, 350, 200, 20, "solid");
+    platform1.isMoving = true;
+    platform1.speedX = 281.25; // píxeles por segundo
+    platform1.minX = 275;
+    platform1.maxX = 1400;
+    this.movingPlatform.push(platform1);
+
     this.movingPlatform.forEach(p => ColliderManager.addCollider(p));
   }
 
