@@ -133,8 +133,12 @@ export class Home {
 
     if(this.coin != null){
       this.coin.update(deltaTime);
-      if(this.coin.collected) this.coin = null;
-      else this.updateCoinPosition();
+      if(this.coin.collected) {
+        this.coin = null;
+        this.game.collectedCoins += 1;
+      } else {
+        this.updateCoinPosition();
+      }
     }
   }
 

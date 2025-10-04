@@ -7,6 +7,8 @@ export class Games {
     this.id = "games";
     this.game = game;
     this.movingPlatform = [];
+    this.coin = null;
+    this.createCoin = true;
   }
 
   onEnter() {
@@ -38,15 +40,35 @@ export class Games {
     platform3.maxX = 1400;
     this.movingPlatform.push(platform3);
     this.movingPlatform.forEach(p => ColliderManager.addCollider(p));
+
+    if(this.coin === null && this.createCoin){
+      const coin = new Coin(925, 100, "./assets/coin.png");
+      this.coin = coin;
+      this.createCoin = false;
+    }else if(this.coin != null){
+      if(!this.coin.collected) this.coin.collider.active = true;
+    }
   }
 
   onExit() {
     this.movingPlatform.forEach(p => ColliderManager.removeCollider(p));
     this.movingPlatform = [];
+
+    if (this.coin != null) {
+      this.coin.collider.active = false;
+    }
   }
 
   update(deltaTime) {
     this.movingPlatform.forEach(p => p.update(deltaTime));
+
+    if(this.coin != null){
+      this.coin.update(deltaTime);
+      if(this.coin.collected) {
+        this.coin = null;
+        this.game.collectedCoins += 1;
+      }
+    }
   }
 
   draw(ctx) {
@@ -56,6 +78,9 @@ export class Games {
       ctx.fillRect(p.x, p.y, p.width, p.height);
     });
     ctx.restore();
+
+    if(this.coin === null) return;
+    this.coin.draw(ctx);
   }
 
 }

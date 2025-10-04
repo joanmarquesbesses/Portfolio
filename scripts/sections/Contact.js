@@ -6,6 +6,9 @@ export class Contact {
 
   onEnter() {
     console.log("Entrando en Contact");
+    if(this.game.collectedCoins >= 3){
+      console.log("¡Has desbloqueado el contacto!");
+    }
   }
 
   onExit() {

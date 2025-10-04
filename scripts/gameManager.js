@@ -49,6 +49,8 @@ export class GameManager {
     // mostramos la sección inicial (sin fade porque aún no interactuamos)
     this.showSection(this.currentSectionId, true);
     this.sections[this.currentSectionId]?.onEnter?.();
+
+    this.collectedCoins = 0;
   }
 
   resizeCanvas() {
