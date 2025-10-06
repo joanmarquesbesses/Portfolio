@@ -20,7 +20,7 @@ function checkWindowSize() {
     // si el juego está activo y ahora la ventana es pequeña, cerramos
     if (game.isRunning) {
       game.stopGame();
-      toggleBtn.textContent = "🎮 Activar Juego";
+      toggleBtn.textContent = "🎮 Start Game";
     }
   }
 }
@@ -31,7 +31,7 @@ checkWindowSize();
 toggleBtn.addEventListener("click", () => {
   toggleBtn.blur();
   game.toggleGame((isRunning) => {
-    toggleBtn.textContent = isRunning ? "❌ Desactivar Juego" : "🎮 Activar Juego";
+    toggleBtn.textContent = isRunning ? "❌ Stop Game" : "🎮 Start Game";
     if (isRunning) {
       document.body.classList.add("game-active");
       document.body.classList.remove("html-mode");
