@@ -103,9 +103,29 @@ export class GameManager {
     // navegación automática (ejemplo)
     if (!this.isTransitioning) {
       if (this.ninja.x + this.ninja.width >= this.LOGICAL_WIDTH) {
-        this.changeSection("games", "right");
+        switch (this.currentSectionId) {
+          case "home":
+            this.changeSection("games", "right");
+            break;
+          case "games":
+            this.changeSection("engines", "right");
+            break;
+          case "engines":
+            this.changeSection("contact", "right");
+            break;
+        }
       } else if (this.ninja.x <= 0) {
-        this.changeSection("home", "left");
+        switch (this.currentSectionId) {
+          case "contact":
+            this.changeSection("engines", "left");
+            break;
+          case "engines":
+            this.changeSection("games", "left");
+            break;
+          case "games":
+            this.changeSection("home", "left");
+            break;
+        }
       }
     }
 
