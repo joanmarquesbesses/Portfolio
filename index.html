@@ -587,32 +587,66 @@
 
   <!-- 🔹 Runic2D Engine Detail -->
   <section id="runic2d" class="hidden game-detail">
-    <h2 class="game-title">Runic2D</h2>
+    <h2 class="game-title">Runic2D - Custom C++ Game Engine</h2>
 
     <div class="game-content">
       <div class="carousel">
         <div class="carousel-track">
           <div class="carousel-item">
-            <img src="assets/Runic2D/Runic2Dicon.png" alt="MonoGame Engine gif">
+            <img src="assets/Runic2D/Runic2Dicon.png" alt="Runic2D Engine" loading="lazy">
+          </div>
+          <div class="carousel-item">
+            <img src="assets/Runic2D/physics.gif" alt="Runic2D Engine gif" loading="lazy">
+          </div>
+          <div class="carousel-item">
+            <img src="assets/Runic2D/animation.gif" alt="Runic2D Engine gif" loading="lazy">
+          </div>
+          <div class="carousel-item">
+            <img src="assets/Runic2D/collisions.gif" alt="Runic2D Engine gif" loading="lazy">
+          </div>
+          <div class="carousel-item">
+            <img src="assets/Runic2D/gameplay.gif" alt="Runic2D Engine gif" loading="lazy">
           </div>
         </div>
+        <button class="carousel-btn prev">‹</button>
+        <button class="carousel-btn next">›</button>
       </div>
 
       <div class="game-description">
         <p>
-          Runic2D is a custom-built 2D game engine as part of my Final Degree Project (TFG),
-          developed from scratch in C++ with OpenGL, designed with a strong focus on performance and optimization. 
-          It features a multithreaded architecture for efficient resource loading and execution, along with advanced rendering 
-          optimizations such as batch rendering to maximize frame rates. The engine includes a 
-          custom event system, a physics module for real-time simulations, and support for flexible 
-          shader and texture management. Built with modularity in mind, Runic2D is designed to be 
-          easily extensible and adaptable across different platforms and rendering backends, 
-          making it a solid foundation for building fast and scalable 2D games.
+          Runic2D is a high-performance 2D game engine built from scratch using <strong>Modern C++</strong> and <strong>OpenGL</strong>.
+          Designed with a focus on <strong>Data-Oriented Design</strong>, the engine features a strict separation between Core, Editor, and Runtime environments.
+          It implements a fully abstracted Rendering API, allowing for backend flexibility, and utilizes an <strong>ECS architecture (EnTT)</strong>
+          to ensure cache locality and scalable gameplay logic.
         </p>
       </div>
     </div>
 
-    <div class="game-extra">
+    <div class="game-description">
+      <h3>Technical Deep Dive</h3>
+      
+      <p>
+        <strong>Core Architecture & ECS:</strong> Built around <strong>EnTT</strong> for efficient memory layout. 
+        Features a strict separation between Engine Core (Library), Editor, and Runtime, along with a 
+        <strong>native C++ scripting bridge</strong> for gameplay logic.
+      </p>
+
+      <p>
+        <strong>Rendering & Optimization:</strong> Implements a <strong>Hardware Abstraction Layer (HAL)</strong> 
+        to decouple logic from OpenGL. Optimized with automatic <strong>Batch Rendering</strong> to minimize 
+        draw calls and an integrated CPU-based particle system.
+      </p>
+
+      <p>
+        <strong>Systems & Tools:</strong> Integrated <strong>Box2D</strong> physics with custom debug visualization. 
+        The custom <strong>ImGui Editor</strong> includes a Scene Hierarchy, Inspector, Content Browser, and Console. 
+        Also features real-time profiling (FPS, Draw Calls) and a centralized Resource Manager.
+      </p>
+
+      <p>
+        <strong>Workflow:</strong> Custom <strong>Event System</strong> for input handling and window events, 
+        configured with <strong>Premake5</strong> for easy cross-platform project generation.
+      </p>
       <button class="back-btn">← Back</button>
     </div>
   </section>
