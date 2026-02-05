@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Detectar si estamos en un game-detail o en un engine-detail
       const parentSection = btn.closest("section");
       let returnTo = "games";
-      if (parentSection && parentSection.id.includes("engine")) {
+      if (parentSection && (parentSection.id.includes("engine") || parentSection.id === "runic2d")) {
         returnTo = "engines";
       }
 
