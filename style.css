@@ -310,11 +310,24 @@ a {
   margin-bottom: 0.8rem;
 }
 
+.skill-group {
+  margin-top: 1.5rem;
+}
+
+.skill-group h4 {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.8rem;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 .skills-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
-  margin-top: 1.5rem;
 }
 
 .skill-tag {
