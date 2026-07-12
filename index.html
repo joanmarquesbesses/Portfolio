@@ -1,705 +1,332 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <title>Joan Marques - Portfolio</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- 🔹 Barra fija -->
+  
   <nav id="navbar">
-    <button data-section="home">Home</button>
-    <button data-section="engines">Engines</button>
-    <button data-section="games">Games</button>
-    <button data-section="contact">Contact</button>
+    <div class="nav-content">
+      <a href="#home" class="logo">Joan <span>Marques</span></a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#featured">Featured Work</a></li>
+        <li><a href="#projects">More Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+    </div>
   </nav>
 
-  <section id="home" class="hero">
-    <div class="home-wrapper">
-      <!-- Tarjeta izquierda -->
-      <div class="side-card left-card">
-        <h1><span>My studies</span></h1>
-        <p>I'm currently in my final year of the Bachelor’s Degree 
-           in Video Game Design and Development at UPC - CITM (Barcelona).</p>
-        <p>Before that, I completed a Higher Degree in Multiplatform Applications 
-           Development (DAM) + Video Games.</p>
-      </div>
-
-      <!-- Tarjeta central -->
-      <div class="card main-card">
-        <div class="profile-pic">
-          <img src="assets/home.jpg" alt="Imagen Home">
+  <header id="home" class="section hero fade-in">
+    <div class="container">
+      <div class="hero-content centered">
+        <div class="profile-frame static">
+          <img src="assets/home.jpg" alt="Joan Marques">
         </div>
-        <h1>Hi, I'm <span>Joan</span></h1>
-        <p class="subtitle">a Video Game Programmer</p>
+        <p class="greeting">Hi, I'm</p>
+        <h1 class="glitch-title">Joan Marques</h1>
+        <h2 class="subtitle">Video Game Programmer</h2>
+        <p class="hero-desc">Passionate about creating fun, polished experiences and robust game engines.</p>
+        <div class="hero-actions centered-actions">
+          <a href="#featured" class="btn primary">View My Work</a>
+          <a href="#contact" class="btn secondary">Contact Me</a>
+        </div>
       </div>
+    </div>
+  </header>
 
-      <!-- Tarjeta derecha -->
-      <div class="side-card right-card">
-        <h1><span>Experience</span></h1>
-        <p>Teaching Interfaces Development at the DAM + Video Games program.</p>  
-        <p>Private tutoring in JavaScript for audiovisual students.</p>  
-        <p>Internship in Quality Assurance (QA), gaining insight into testing and game production workflows.</p>
+  <section id="about" class="section about fade-in">
+    <div class="container">
+      <h2 class="section-title">About Me</h2>
+      <div class="about-grid">
+        <div class="about-card">
+          <i class="fa-solid fa-graduation-cap card-icon"></i>
+          <h3>Studies</h3>
+          <p>Graduated with a Bachelor’s Degree in Video Game Design and Development at UPC - CITM (Barcelona).</p>
+          <p>Higher Degree in Multiplatform Applications Development (DAM) + Video Games.</p>
+        </div>
+        <div class="about-card">
+          <i class="fa-solid fa-briefcase card-icon"></i>
+          <h3>Experience</h3>
+          <p>Teaching Interfaces Development at the DAM + Video Games program.</p>
+          <p>Private tutoring in JavaScript for audiovisual students.</p>
+          <p>Internship in Quality Assurance (QA), gaining insight into testing workflows.</p>
+        </div>
+        <div class="about-card skills-card">
+          <i class="fa-solid fa-code card-icon"></i>
+          <h3>Core Skills</h3>
+          <div class="skills-list">
+            <span class="skill-tag">C++</span>
+            <span class="skill-tag">C#</span>
+            <span class="skill-tag">OpenGL</span>
+            <span class="skill-tag">Unity</span>
+            <span class="skill-tag">Unreal Engine</span>
+            <span class="skill-tag">JavaScript</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="games" class="hidden">
-    <div class="games-carousel">
-      <button class="carousel-btn prev">‹</button>
-      <div class="carousel-track-wrapper">
-        <div class="carousel-track">
-          
-          <div class="carousel-item">
-
-            <div class="games-grid">
-              <div class="game-card" data-target="warhammer">
-                <div class="img-wrapper">
-                  <img src="assets/WarHammer/title.png" alt="Game 1" class="static-img">
-                  <img src="assets/WarHammer/WarHammer.gif" alt="Game 1 animado" class="gif-img" loading="lazy">
-                </div>
-              </div>
-
-              <div class="game-card" data-target="controlled">
-                <div class="img-wrapper">
-                  <img src="assets/Controlled/Controlled.png" alt="Game 2" class="static-img">
-                  <img src="assets/Controlled/Controlled.gif" alt="Game 2 animado" class="gif-img" loading="lazy">
-                </div>
-              </div>
-
-              <div class="game-card" data-target="skyfox">
-                <div class="img-wrapper">
-                  <img src="assets/SkyFox/SkyFox.png" alt="Game 3" class="static-img">
-                  <img src="assets/SkyFox/SkyFox.gif" alt="Game 3 animado" class="gif-img" loading="lazy">
-                </div>
-              </div>
-
-              <div class="game-card" data-target="fishyfeast">
-                <div class="img-wrapper">
-                  <img src="assets/FishyFeast/FishyFeast.png" alt="Game 4" class="static-img">
-                  <img src="assets/FishyFeast/FishyFeast.gif" alt="Game 4 animado" class="gif-img" loading="lazy">
-                </div>
-              </div>
-            </div>
-          </div>
-           
-          <div class="carousel-item">
-            <div class="games-grid">
-              <div class="game-card" data-target="minininja">
-                <div class="img-wrapper">
-                  <img src="assets/MiniNinja/MinNinja.png" alt="Game 5" class="static-img">
-                  <img src="assets/MiniNinja/MinNinja.gif" alt="Game 5 animado" class="gif-img" loading="lazy">
-                </div>
-              </div>
-
-              <div class="game-card" data-target="sorcerstriker">
-                <div class="img-wrapper">
-                  <img src="assets/sorcerstriker/title.jpg" alt="Game 6" class="static-img">
-                  <img src="assets/sorcerstriker/player.gif" alt="Game 6 animado" class="gif-img" loading="lazy">
-                </div>
-              </div>
-
-              <div class="game-card" data-target="zzzombiear">
-                <div class="img-wrapper">
-                  <img src="assets/zzzombieAR/title.png" alt="Game 7" class="static-img">
-                  <img src="assets/zzzombieAR/player.gif" alt="Game 7 animado" class="gif-img" loading="lazy">
-                </div>
-              </div>
-
-              <div class="game-card" data-target="fentalchimist">
-                <div class="img-wrapper">
-                  <img src="assets/fentalchimist/title.png" alt="Game 8" class="static-img">
-                  <img src="assets/fentalchimist/alch1.gif" alt="Game 8 animado" class="gif-img" loading="lazy">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button class="carousel-btn next">›</button>
-    </div>
-  </section>
-
-  <section id="warhammer" class="hidden game-detail">
-    <h2 class="game-title">Warhammer 40,000: Blood and Thunder</h2>
-
-    <div class="game-content">
-      <!-- Carrusel -->
-      <div class="carousel">
-        <div class="carousel-track">
-          <div class="carousel-item">
-            <iframe 
-              src="https://www.youtube.com/embed/eRoSj9UPF5I?enablejsapi=1"
-              frameborder="0"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <div class="carousel-item">
-            <img src="assets/WarHammer/WarHammer.gif" alt="gif gameplay" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/WarHammer/MainMenu.GIF" alt="screenshot" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/WarHammer/scripting.gif" alt="screenshot" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/WarHammer/LoseScreen2Comp.png" alt="screenshot" loading="lazy">
-          </div>
-        </div>
-        <button class="carousel-btn prev">‹</button>
-        <button class="carousel-btn next">›</button>
-      </div>
-
-      <div class="game-description">
-         <p>
-          A 3D fast-paced top-down action game inspired by the gameplay style of Diablo and set in the grimdark universe of Warhammer 40,000.
-          Face relentless hordes of enemies, fight across large outdoor battlefields, the claustrophobic interiors of a space cruiser, and a deadly boss arena.
-          Blood and Thunder was developed using our custom engine, Hawk Engine, built entirely by our programming team.
-        </p>
-      </div>
-    </div>
-    <div class="game-extra">
-      <h3>My job:</h3>
-      <ul>
-        <li>Resource Manager</li>
-        <li>UI System</li>
-        <li>Enemy and camera scripting</li>
-        <li>Modern OpenGL Transition</li>
-        <li>Build Mode & Profiling</li>
-        <li>Scripting Gameplay</li>
-      </ul>
-      <button class="back-btn">← Back</button>
-    </div>
-  </section>
-
-  <section id="controlled" class="hidden game-detail">
-    <h2 class="game-title">Controlled</h2>
-
-    <div class="game-content">
-      <!-- Carrusel -->
-      <div class="carousel">
-        <div class="carousel-track">
-          <div class="carousel-item">
-            <iframe 
-              src="https://www.youtube.com/embed/mHNnbUDT1uc?enablejsapi=1"
-              frameborder="0"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <div class="carousel-item">
-            <img src="assets/Controlled/Controlled.gif" alt="gif gameplay" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/Controlled/weapons.gif" alt="screenshot" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/Controlled/upgrades.gif" alt="gif gameplay" loading="lazy">
-          </div>
-        </div>
-        <button class="carousel-btn prev">‹</button>
-        <button class="carousel-btn next">›</button>
-      </div>
-
-      <div class="game-description">
-         <p>
-          Controlled is a Rouge-Lite, FPS game made with Unreal Engine 4.
-          The game is set on a Sci-fi near future apocalyptic world where AI controls both machines and population.
-          Your mission, free the world form this controlling AI.
-        </p>
-      </div>
-    </div>
-    <div class="game-extra">
-      <h3>My job:</h3>
-      <ul>
-        <li>Player Mechanics</li>
-        <li>Weapon and Gadgets system</li>
-        <li>Upgrade system</li>
-        <li>Inventory system</li>
-      </ul>
-      <button class="back-btn">← Back</button>
-    </div>
-  </section>
-
-  <section id="skyfox" class="hidden game-detail">
-    <h2 class="game-title">Skyfox</h2>
-
-    <div class="game-content">
-      <!-- Carrusel -->
-      <div class="carousel">
-        <div class="carousel-track">
-          <div class="carousel-item">
-            <iframe 
-              src="https://www.youtube.com/embed/Ugy9BDhPAHQ?enablejsapi=1"
-              frameborder="0"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <div class="carousel-item">
-            <img src="assets/SkyFox/mechanics.gif" alt="gif gameplay" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/SkyFox/upgrades.gif" alt="screenshot" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/SkyFox/SkyFox.png" alt="gif gameplay" loading="lazy">
-          </div>
-        </div>
-        <button class="carousel-btn prev">‹</button>
-        <button class="carousel-btn next">›</button>
-      </div>
-
-      <div class="game-description">
-         <p>
-          Sky Fox is a dropper game made with Unity, where your goal is to take our friend Roxy to the end of a level full of obstacles.
-          The more distance you fall, the more points you get.
-          This project was created for the "Brackeys Game Jam 2023.2".
-          The theme was "Diving Deeper". That's why our fox needs to skydive until reaching the lowest place in the level.
-        </p>
-      </div>
-    </div>
-    <div class="game-extra">
-      <h3>My job:</h3>
-      <ul>
-        <li>Player Mechanics</li>
-        <li>Upgrade system</li>
-        <li>Save and Load system</li>
-        <li>Game feel and polish</li>
-      </ul>
-      <button class="back-btn">← Back</button>
-    </div>
-  </section>
-
-  <section id="fishyfeast" class="hidden game-detail">
-    <h2 class="game-title">Fishy Feast</h2>
-
-    <div class="game-content">
-      <!-- Carrusel -->
-      <div class="carousel">
-        <div class="carousel-track">
-          <div class="carousel-item">
-            <iframe 
-              src="https://www.youtube.com/embed/dLb1TVU249A?enablejsapi=1"
-              frameborder="0"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <div class="carousel-item">
-            <img src="assets/FishyFeast/enemie.gif" alt="gif gameplay" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/FishyFeast/menu.gif" alt="screenshot" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/FishyFeast/FishyFeast.gif" alt="gif gameplay" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/FishyFeast/evolution.jpg" alt="gif gameplay" loading="lazy">
-          </div>
-        </div>
-        <button class="carousel-btn prev">‹</button>
-        <button class="carousel-btn next">›</button>
-      </div>
-
-      <div class="game-description">
-         <p>
-          Fishy Feast is a game made using Unreal Engine where you play as a fish that has to grow eating smaller preys, 
-          while avoiding fearsome lantern fishes that try to hunt you. Get big enough and  eat your predators too! 
-          Catch as many fish as you can!
-          This project was created in a month for the "Game Off 2023" Game Jam.
-          The theme was "SCALE". It’s represented in the game by the scale increments of the main character every time you eat little fishes.
-        </p>
-      </div>
-    </div>
-    <div class="game-extra">
-      <h3>My job:</h3>
-      <ul>
-        <li>Player Mechanics</li>
-        <li>Enemy System</li>
-        <li>Level Progression</li>
-        <li>Camera, game feel and polish</li>
-      </ul>
-      <button class="back-btn">← Back</button>
-    </div>
-  </section>
-
-  <section id="minininja" class="hidden game-detail">
-    <h2 class="game-title">Mini Ninja</h2>
-
-    <div class="game-content">
-      <!-- Carrusel -->
-      <div class="carousel">
-        <div class="carousel-track">
-          <div class="carousel-item">
-            <iframe 
-              src="https://www.youtube.com/embed/0gZfAgO5IWY?enablejsapi=1"
-              frameborder="0"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <div class="carousel-item">
-            <img src="assets/MiniNinja/MinNinja.gif" alt="gif gameplay" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/MiniNinja/enemies.gif" alt="screenshot" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/MiniNinja/debug.gif" alt="gif gameplay" loading="lazy">
-          </div>
-        </div>
-        <button class="carousel-btn prev">‹</button>
-        <button class="carousel-btn next">›</button>
-      </div>
-
-      <div class="game-description">
-         <p>
-          Mini Ninja is a platform game made with SDL where the player must traverse mysterious caves to complete their trial.
-          Face fierce enemies and sharpen your skills along the way — but beware: at the end awaits a powerful boss with multiple 
-          phases that will test everything you've learned.
-          Do you have what it takes to reach the end?
-        </p>
-      </div>
-    </div>
-    <div class="game-extra">
-      <h3>My job:</h3>
-      <ul>
-        <li>Player Mechanics</li>
-        <li>Enemy System</li>
-        <li>Debug Mode</li>
-        <li>Pathfinding</li>
-      </ul>
-      <button class="back-btn">← Back</button>
-    </div>
-  </section>
-
-  <section id="sorcerstriker" class="hidden game-detail">
-    <h2 class="game-title">Sorcer Striker</h2>
-
-    <div class="game-content">
-      <!-- Carrusel -->
-      <div class="carousel">
-        <div class="carousel-track">
-          <div class="carousel-item">
-            <iframe 
-              src="https://www.youtube.com/embed/05HTZ06D0yE?enablejsapi=1"
-              frameborder="0"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <div class="carousel-item">
-            <img src="assets/sorcerstriker/player.gif" alt="gif gameplay" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/sorcerstriker/boss.gif" alt="screenshot" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/sorcerstriker/debug.gif" alt="gif gameplay" loading="lazy">
-          </div>
-        </div>
-        <button class="carousel-btn prev">‹</button>
-        <button class="carousel-btn next">›</button>
-      </div>
-
-      <div class="game-description">
-         <p>
-          Sorcer Striker is a fast-paced arcade game developed in C++ with SDL, inspired by the first stage of the original classic.  
-          The player must survive relentless enemy waves and progress toward a powerful final boss that will push their reflexes and endurance 
-          to the limit. Every battle demands precision and quick reactions to keep up with the bullet-hell pace.  
-          Can you carve your way through the horde and defeat the mighty boss?
-        </p>
-      </div>
-    </div>
-    <div class="game-extra">
-      <h3>My job:</h3>
-      <ul>
-        <li>Player Mechanics</li>
-        <li>Enemy System</li>
-        <li>Debug Mode</li>
-        <li>Level transitions</li>
-      </ul>
-      <button class="back-btn">← Back</button>
-    </div>
-  </section>
-
-  <section id="zzzombiear" class="hidden game-detail">
-    <h2 class="game-title">ZZZombie AR</h2>
-
-    <div class="game-content">
-      <!-- Carrusel -->
-      <div class="carousel">
-        <div class="carousel-track">
-          <div class="carousel-item">
-            <iframe 
-              src="https://www.youtube.com/embed/GHjzS8OpSsQ?enablejsapi=1"
-              frameborder="0"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <div class="carousel-item">
-            <img src="assets/zzzombieAR/player.gif" alt="gif gameplay" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/zzzombieAR/menu.gif" alt="screenshot" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/zzzombieAR/die.gif" alt="gif gameplay" loading="lazy">
-          </div>
-        </div>
-        <button class="carousel-btn prev">‹</button>
-        <button class="carousel-btn next">›</button>
-      </div>
-
-      <div class="game-description">
-         <p>
-          ZZZombieAR is a mobile Augmented Reality game developed with Unity.  
-          Players can set up the battlefield anywhere by placing zombie spawn points in their real environment.  
-          Once the game begins, zombies will relentlessly chase you wherever you go — turning your surroundings into a survival arena.  
-          How many waves can you withstand before being overrun?
-        </p>
-      </div>
-    </div>
-    <div class="game-extra">
-      <h3>My job:</h3>
-      <ul>
-        <li>Shooting</li>
-        <li>Zombie spawn and chasing</li>
-        <li>Score system</li>
-        <li>Collisions</li>
-      </ul>
-      <button class="back-btn">← Back</button>
-    </div>
-  </section>
-
-  <section id="fentalchimist" class="hidden game-detail">
-    <h2 class="game-title">FentAlchimist</h2>
-
-    <div class="game-content">
-      <!-- Carrusel -->
-      <div class="carousel">
-        <div class="carousel-track">
-          <div class="carousel-item">
-            <iframe 
-              src="https://www.youtube.com/embed/TtJw1wrRwjI?enablejsapi=1"
-              frameborder="0"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <div class="carousel-item">
-            <img src="assets/fentalchimist/alch1.gif" alt="gif gameplay" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/fentalchimist/alch2.gif" alt="screenshot" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/fentalchimist/title.png" alt="gif gameplay" loading="lazy">
-          </div>
-        </div>
-        <button class="carousel-btn prev">‹</button>
-        <button class="carousel-btn next">›</button>
-      </div>
-
-      <div class="game-description">
-         <p>
-          Fent Alchimist is a Virtual Reality game developed with Unity where you run your own alchemy shop.  
-          Customers arrive with unique potion requests, and you must craft their orders before the time runs out.  
-          To brew potions, you can combine magical ingredients, grind them with a mortar and pestle, and heat them on a special fire-powered alchemy table.  
-          Master the art of alchemy and keep your clients satisfied before chaos takes over the shop!
-        </p>
-      </div>
-    </div>
-    <div class="game-extra">
-      <h3>My job:</h3>
-      <ul>
-        <li>Player Mechanics</li>
-        <li>Ingredients combination</li>
-        <li>NPC system</li>
-        <li>Orders system</li>
-      </ul>
-      <button class="back-btn">← Back</button>
-    </div>
-  </section>
-
-  <section id="engines" class="hidden">
-    <div class="games-grid"> <!-- usamos el mismo grid -->
-
-      <div class="game-card" data-target="runic2d">
-        <div class="img-wrapper">
-          <img src="assets/Runic2D/Runic2Dicon.png" alt="Runic2D" class="static-img">
-          <img src="assets/Runic2D/cameraeditor.gif" alt="Runic2D gif" class="gif-img" loading="lazy">
-        </div>
-      </div>
-
-      <div class="game-card" data-target="hawkengine">
-        <div class="img-wrapper">
-          <img src="assets/HawkEngine/menu.jpg" alt="Hawk Engine" class="static-img">
-          <img src="assets/HawkEngine/menu.gif" alt="Hawk Engine gif" class="gif-img" loading="lazy">
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section id="hawkengine" class="hidden game-detail">
-    <h2 class="game-title">Hawk Engine</h2>
-
-    <div class="game-content">
-      <div class="carousel">
-        <div class="carousel-track">
-          <div class="carousel-item">
-            <img src="assets/HawkEngine/menu.gif" alt="Hawk Engine gif" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/HawkEngine/edit.gif" alt="Hawk Engine screenshot" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/HawkEngine/boss.gif" alt="Hawk Engine screenshot" loading="lazy">
-          </div>
-        </div>
-        <button class="carousel-btn prev">‹</button>
-        <button class="carousel-btn next">›</button>
-      </div>
-
-      <div class="game-description">
-        <p>
-          Hawk Engine is a custom 3D engine developed in C++ with Modern OpenGL.
-          It features an integrated editor built with ImGui, a resource management system, advanced rendering, lights, UI system, animations, particle effects, and shaders.
-          It was used in the development of Warhammer 40,000: Blood and Thunder.
-        </p>
-      </div>
-    </div>
-
-    <div class="game-extra">
-      <h3>My job:</h3>
-      <ul>
-        <li>Resource Manager</li>
-        <li>UI System from scratch</li>
-        <li>Enemy and camera implementation</li>
-        <li>Transition to Modern OpenGL</li>
-        <li>Profiling</li>
-        <li>Build Mode</li>
-      </ul>
-      <button class="back-btn">← Back</button>
-    </div>
-  </section>
-
-  <!-- 🔹 Runic2D Engine Detail -->
-  <section id="runic2d" class="hidden game-detail">
-    <h2 class="game-title">Runic2D - Custom C++ Game Engine</h2>
-
-    <div class="game-content">
-      <div class="carousel">
-        <div class="carousel-track">
-          <div class="carousel-item">
-            <img src="assets/Runic2D/Runic2Dicon.png" alt="Runic2D Engine" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/Runic2D/physics.gif" alt="Runic2D Engine gif" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/Runic2D/animation.gif" alt="Runic2D Engine gif" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/Runic2D/sceneeditor.gif" alt="Runic2D Engine gif" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="assets/Runic2D/gameplay.gif" alt="Runic2D Engine gif" loading="lazy">
-          </div>
-        </div>
-        <button class="carousel-btn prev">‹</button>
-        <button class="carousel-btn next">›</button>
-      </div>
-
-      <div class="game-description">
-        <p>
-          Runic2D is a high-performance 2D game engine built from scratch using <strong>Modern C++</strong> and <strong>OpenGL</strong>.
-          Designed with a focus on <strong>Data-Oriented Design</strong>, the engine features a strict separation between Core, Editor, and Runtime environments.
-          It implements a fully abstracted Rendering API, allowing for backend flexibility, and utilizes an <strong>ECS architecture (EnTT)</strong>
-          to ensure cache locality and scalable gameplay logic.
-        </p>
-      </div>
-    </div>
-
-    <div class="game-description">
-      <h3>Technical Deep Dive</h3>
+  <section id="featured" class="section featured fade-in">
+    <div class="container">
+      <h2 class="section-title">Featured Work</h2>
       
-      <p>
-        <strong>Core Architecture & ECS:</strong> Built around <strong>EnTT</strong> for efficient memory layout. 
-        Features a strict separation between Engine Core (Library), Editor, and Runtime, along with a 
-        <strong>native C++ scripting bridge</strong> for gameplay logic.
-      </p>
-
-      <p>
-        <strong>Rendering & Optimization:</strong> Implements a <strong>Hardware Abstraction Layer (HAL)</strong> 
-        to decouple logic from OpenGL. Optimized with automatic <strong>Batch Rendering</strong> to minimize 
-        draw calls and an integrated CPU-based particle system.
-      </p>
-
-      <p>
-        <strong>Systems & Tools:</strong> Integrated <strong>Box2D</strong> physics with custom debug visualization. 
-        The custom <strong>ImGui Editor</strong> includes a Scene Hierarchy, Inspector, Content Browser, and Console. 
-        Also features real-time profiling (FPS, Draw Calls) and a centralized Resource Manager.
-      </p>
-
-      <p>
-        <strong>Workflow & Validation:</strong> Custom <strong>Event System</strong> for input handling and window events, 
-        configured with <strong>Premake5</strong>. Currently validating the engine's architecture by developing a 
-        <strong>Survivor-like game demo</strong> (Dogfooding) to test performance in a production scenario.
-      </p>
-      <button class="back-btn">← Back</button>
-    </div>
-  </section>
-
-  <section id="contact" class="hidden">
-    <div class="contact-wrapper">
-    
-      <!-- Bloque contacto -->
-      <div class="contact-card">
-        <h2>Contact</h2>
-        <p> Passionate about creating fun and polished experiences.</p>
-        <p>Feel free to contact me for any collaboration, feedback, or just to say hi!</p>
-        <div class="social-links">
-          <a href="assets/joan_marques_besses_Cv.pdf" target="_blank"><i class="fa-solid fa-file-pdf"></i>  CV</a>
-          <a href="mailto:joanmarquesbesses@gmail.com"><i class="fa-solid fa-envelope"></i></a>
-          <a href="https://github.com/joanmarquesbesses" target="_blank"><i class="fa-brands fa-github"></i></a>
-          <a href="https://www.linkedin.com/in/joanmarquesbesses/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+      <!-- 1. Runic2D -->
+      <div class="project-showcase">
+        <div class="project-info">
+          <div class="project-tags">
+            <span class="tag">C++</span>
+            <span class="tag">OpenGL</span>
+            <span class="tag">ECS</span>
+          </div>
+          <h3>Runic2D Engine</h3>
+          <p>A high-performance 2D game engine built from scratch using Modern C++ and OpenGL. Designed with Data-Oriented Design in mind, utilizing an ECS architecture (EnTT) to ensure cache locality and scalable gameplay logic. Includes robust multithreading and is currently validated with a Survivor-like game demo.</p>
+          <ul class="role-list">
+            <li><i class="fa-solid fa-check"></i> Multithreading integration</li>
+            <li><i class="fa-solid fa-check"></i> Survivor-like game demo (Dogfooding)</li>
+            <li><i class="fa-solid fa-check"></i> Hardware Abstraction Layer (HAL) & Native C++ scripting</li>
+            <li><i class="fa-solid fa-check"></i> Integrated Box2D & ImGui Editor</li>
+          </ul>
+          <div class="project-links">
+            <button class="btn secondary play-video" data-video="EL_TEU_CODI_DE_YOUTUBE"><i class="fa-brands fa-youtube"></i> Watch Trailer</button>
+          </div>
+        </div>
+        <div class="project-media">
+          <div class="slider">
+            <div class="slides">
+              <img src="assets/Runic2D/gameplay.gif" class="slide active" alt="Runic2D Gameplay" loading="lazy">
+              <img src="assets/Runic2D/Runic2Dicon.png" class="slide" alt="Runic2D" loading="lazy">
+              <img src="assets/Runic2D/animation.gif" class="slide" alt="Runic2D Animation" loading="lazy">
+              <img src="assets/Runic2D/physics.gif" class="slide" alt="Runic2D Physics" loading="lazy">
+              <img src="assets/Runic2D/sceneeditor.gif" class="slide" alt="Runic2D Editor" loading="lazy">
+            </div>
+            <button class="slider-btn prev">‹</button>
+            <button class="slider-btn next">›</button>
+          </div>
         </div>
       </div>
 
-      <!-- Bloque skills -->
-      <div class="skills-card">
-        <h3>Skills</h3>
-        <div class="skills-grid">
-          <div class="skill"><img src="assets/icons/cpp.png" alt="C++"></div>
-          <div class="skill"><img src="assets/icons/csharp.png" alt="C#"></div>
-          <div class="skill"><img src="assets/icons/opengl.png" alt="OpenGL"></div>
-          <div class="skill"><img src="assets/icons/java.png" alt="Java"></div>
-          <div class="skill"><img src="assets/icons/js.png" alt="JavaScript"></div>
+      <!-- 2. Hawk Engine -->
+      <div class="project-showcase reverse">
+        <div class="project-info">
+          <div class="project-tags">
+            <span class="tag">C++</span>
+            <span class="tag">OpenGL</span>
+            <span class="tag">Custom Engine</span>
+          </div>
+          <h3>Hawk Engine</h3>
+          <p>A custom 3D engine developed in C++ with Modern OpenGL. Features an integrated editor built with ImGui, advanced rendering, lights, UI system, animations, particle effects, and shaders.</p>
+          <ul class="role-list">
+            <li><i class="fa-solid fa-check"></i> Resource Manager</li>
+            <li><i class="fa-solid fa-check"></i> UI System from scratch</li>
+            <li><i class="fa-solid fa-check"></i> Modern OpenGL Transition</li>
+            <li><i class="fa-solid fa-check"></i> Build Mode & Profiling</li>
+          </ul>
         </div>
-        <div class="skills-grid">
-          <div class="skill"><img src="assets/icons/unity.png" alt="Unity"></div>
-          <div class="skill"><img src="assets/icons/unreal.png" alt="Unreal"></div>
-          <div class="skill"><img src="assets/icons/godot.png" alt="Godot"></div>
-          <div class="skill"><img src="assets/icons/vs.png" alt="Visual Studio"></div>
-          <div class="skill"><img src="assets/icons/github.png" alt="GitHub"></div>
+        <div class="project-media">
+          <div class="slider">
+            <div class="slides">
+              <img src="assets/HawkEngine/menu.gif" class="slide active" alt="Hawk Engine Menu" loading="lazy">
+              <img src="assets/HawkEngine/edit.gif" class="slide" alt="Hawk Engine Editor" loading="lazy">
+              <img src="assets/HawkEngine/boss.gif" class="slide" alt="Hawk Engine Gameplay" loading="lazy">
+            </div>
+            <button class="slider-btn prev">‹</button>
+            <button class="slider-btn next">›</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Controlled -->
+      <div class="project-showcase">
+        <div class="project-info">
+          <div class="project-tags">
+            <span class="tag">Unreal Engine</span>
+            <span class="tag">FPS</span>
+            <span class="tag">Rouge-Lite</span>
+          </div>
+          <h3>Controlled</h3>
+          <p>A Rouge-Lite, FPS game set in a Sci-fi near future apocalyptic world where AI controls both machines and population. Your mission is to free the world from this controlling AI.</p>
+          <ul class="role-list">
+            <li><i class="fa-solid fa-check"></i> Player Mechanics & Weapon System</li>
+            <li><i class="fa-solid fa-check"></i> Upgrade system</li>
+            <li><i class="fa-solid fa-check"></i> Inventory system</li>
+          </ul>
+          <div class="project-links">
+            <button class="btn secondary play-video" data-video="mHNnbUDT1uc"><i class="fa-brands fa-youtube"></i> Watch Trailer</button>
+          </div>
+        </div>
+        <div class="project-media">
+          <div class="slider">
+            <div class="slides">
+              <img src="assets/Controlled/Controlled.gif" class="slide active" alt="Controlled Gameplay" loading="lazy">
+              <img src="assets/Controlled/weapons.gif" class="slide" alt="Controlled Weapons" loading="lazy">
+              <img src="assets/Controlled/upgrades.gif" class="slide" alt="Controlled Upgrades" loading="lazy">
+            </div>
+            <button class="slider-btn prev">‹</button>
+            <button class="slider-btn next">›</button>
+          </div>
         </div>
       </div>
 
     </div>
   </section>
 
-  <button id="toggleGame" class="hidden">🎮 Start Game</button>
+  <section id="projects" class="section more-projects fade-in">
+    <div class="container">
+      <h2 class="section-title">More Projects</h2>
+      <div class="projects-grid">
+        
+        <div class="grid-card">
+          <div class="card-img slider">
+            <div class="slides">
+              <img src="assets/WarHammer/WarHammer.gif" class="slide active" alt="Warhammer 40k" loading="lazy">
+              <!-- Per afegir més imatges/GIFs, copia la línia de dalt, treu la classe "active" i canvia el src. Exemple: -->
+              <!-- <img src="assets/WarHammer/MainMenu.GIF" class="slide" loading="lazy"> -->
+            </div>
+            <button class="slider-btn prev">‹</button>
+            <button class="slider-btn next">›</button>
+          </div>
+          <div class="card-content">
+            <h4>Warhammer 40k: Blood and Thunder</h4>
+            <span class="small-tag">Hawk Engine / C++</span>
+            <p>A 3D fast-paced top-down action game built on our custom Hawk Engine.</p>
+            <button class="text-btn play-video" data-video="eRoSj9UPF5I">Watch Video <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
 
-  <div class="side-wall left"></div>
-  <div class="side-wall right"></div>
-  
-  <canvas id="pixel-overlay"></canvas>
-  <canvas id="gameCanvas" tabindex="0"></canvas>
+        <div class="grid-card">
+          <div class="card-img slider">
+            <div class="slides">
+              <img src="assets/FishyFeast/FishyFeast.gif" class="slide active" alt="Fishy Feast" loading="lazy">
+            </div>
+            <button class="slider-btn prev">‹</button>
+            <button class="slider-btn next">›</button>
+          </div>
+          <div class="card-content">
+            <h4>Fishy Feast</h4>
+            <span class="small-tag">Unreal Engine</span>
+            <p>Grow by eating smaller prey while avoiding fearsome lantern fishes. Made for Game Off 2023.</p>
+            <button class="text-btn play-video" data-video="dLb1TVU249A">Watch Video <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
 
-  <script type="module" src="scripts/main.js"></script>
-  <script type="module" src="scripts/gameSections.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+        <div class="grid-card">
+          <div class="card-img slider">
+            <div class="slides">
+              <img src="assets/SkyFox/mechanics.gif" class="slide active" alt="Skyfox" loading="lazy">
+            </div>
+            <button class="slider-btn prev">‹</button>
+            <button class="slider-btn next">›</button>
+          </div>
+          <div class="card-content">
+            <h4>Skyfox</h4>
+            <span class="small-tag">Unity</span>
+            <p>A dropper game where you skydive to reach the lowest place in a level full of obstacles. Brackeys Game Jam.</p>
+            <button class="text-btn play-video" data-video="Ugy9BDhPAHQ">Watch Video <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <div class="grid-card">
+          <div class="card-img slider">
+            <div class="slides">
+              <img src="assets/zzzombieAR/player.gif" class="slide active" alt="ZZZombie AR" loading="lazy">
+            </div>
+            <button class="slider-btn prev">‹</button>
+            <button class="slider-btn next">›</button>
+          </div>
+          <div class="card-content">
+            <h4>ZZZombie AR</h4>
+            <span class="small-tag">Unity AR</span>
+            <p>Mobile Augmented Reality game where zombies chase you in your real environment.</p>
+            <button class="text-btn play-video" data-video="GHjzS8OpSsQ">Watch Video <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <div class="grid-card">
+          <div class="card-img slider">
+            <div class="slides">
+              <img src="assets/fentalchimist/alch1.gif" class="slide active" alt="Fent Alchimist" loading="lazy">
+            </div>
+            <button class="slider-btn prev">‹</button>
+            <button class="slider-btn next">›</button>
+          </div>
+          <div class="card-content">
+            <h4>Fent Alchimist</h4>
+            <span class="small-tag">Unity VR</span>
+            <p>Virtual Reality game where you run an alchemy shop and craft potions for customers.</p>
+            <button class="text-btn play-video" data-video="TtJw1wrRwjI">Watch Video <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <div class="grid-card">
+          <div class="card-img slider">
+            <div class="slides">
+              <img src="assets/MiniNinja/MinNinja.gif" class="slide active" alt="Mini Ninja" loading="lazy">
+            </div>
+            <button class="slider-btn prev">‹</button>
+            <button class="slider-btn next">›</button>
+          </div>
+          <div class="card-content">
+            <h4>Mini Ninja</h4>
+            <span class="small-tag">C++ / SDL</span>
+            <p>Platform game where you traverse caves and fight enemies to complete a trial.</p>
+            <button class="text-btn play-video" data-video="0gZfAgO5IWY">Watch Video <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section contact fade-in">
+    <div class="container">
+      <div class="contact-box">
+        <h2 class="section-title">Let's Connect</h2>
+        <p>Feel free to reach out for any collaboration, feedback, or just to say hi!</p>
+        <div class="social-links-large">
+          <a href="assets/joan_marques_besses_Cv.pdf" target="_blank" class="social-btn">
+            <i class="fa-solid fa-file-pdf"></i> Resume
+          </a>
+          <a href="mailto:joanmarquesbesses@gmail.com" class="social-btn">
+            <i class="fa-solid fa-envelope"></i> Email
+          </a>
+          <a href="https://github.com/joanmarquesbesses" target="_blank" class="social-btn">
+            <i class="fa-brands fa-github"></i> GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/joanmarquesbesses/" target="_blank" class="social-btn">
+            <i class="fa-brands fa-linkedin"></i> LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Joan Marques. Built with passion.</p>
+  </footer>
+
+  <!-- Video Modal -->
+  <div id="videoModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <div class="video-container" id="videoContainer"></div>
+    </div>
+  </div>
+
+  <script src="scripts/main.js"></script>
 </body>
 </html>

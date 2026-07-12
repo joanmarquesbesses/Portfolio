@@ -1,125 +1,129 @@
-// scripts/main.js
-import { GameManager } from "./gameManager.js";
+document.addEventListener('DOMContentLoaded', () => {
+  // Mobile Menu Toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
 
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-const game = new GameManager(canvas, ctx);
-
-// expongo la instancia globalmente para gameSections (tu HTML carga main antes de gameSections)
-window.game = game;
-
-// Botón toggle
-const toggleBtn = document.getElementById("toggleGame");
-
-// -> mostrar/ocultar el botón según tamaño de ventana
-function checkWindowSize() {
-  if (window.innerWidth >= 1280 && window.innerHeight >= 720) {
-    toggleBtn.classList.remove("hidden");
-  } else {
-    toggleBtn.classList.add("hidden");
-    // si el juego está activo y ahora la ventana es pequeña, cerramos
-    if (game.isRunning) {
-      game.stopGame();
-      toggleBtn.textContent = "🎮 Start Game";
-    }
-  }
-}
-window.addEventListener("resize", checkWindowSize);
-checkWindowSize();
-
-// toggle
-toggleBtn.addEventListener("click", () => {
-  toggleBtn.blur();
-  game.toggleGame((isRunning) => {
-    toggleBtn.textContent = isRunning ? "❌ Stop Game" : "🎮 Start Game";
-    if (isRunning) {
-      document.body.classList.add("game-active");
-      document.body.classList.remove("html-mode");
-    } else {
-      document.body.classList.remove("game-active");
-      document.body.classList.add("html-mode");
-    }
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
   });
-});
 
-// navigation bar buttons (home / games / contact)
-document.querySelectorAll("#navbar button").forEach(btn => {
-  btn.addEventListener("click", (e) => {
-    const target = btn.getAttribute("data-section");
-    // si no existe la sección en DOM ignora
-    if (!document.getElementById(target)) return;
-
-    // si el juego está corriendo, dejamos que GameManager haga pixelFade
-    // en html-mode usamos fade normal -> pasamos instant = !game.isRunning
-    game.changeSection(target, null, !game.isRunning);
-
-    e.target.blur();
-    if (game.isRunning) canvas.focus();
+  // Close mobile menu when a link is clicked
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('active');
+    });
   });
-});
 
-// por defecto, dejamos el body en modo html (permitir scroll si hace falta)
-document.body.classList.add("html-mode");
+  // Intersection Observer for Scroll Animations (Fade-in)
+  const fadeElements = document.querySelectorAll('.fade-in');
 
-const mainCard = document.querySelector('.main-card');
-const sideCards = document.querySelectorAll('.side-card');
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.15
+  };
 
-mainCard.addEventListener('mouseenter', () => {
-  sideCards.forEach(c => c.classList.add('visible'));
-});
-mainCard.addEventListener('mouseleave', () => {
-  sideCards.forEach(c => c.classList.remove('visible'));
-});
-
-// Carrusel
-document.addEventListener("DOMContentLoaded", () => {
-  const track = document.querySelector('.games-carousel .carousel-track');
-  const items = document.querySelectorAll('.games-carousel .carousel-item');
-  const prevBtn = document.querySelector('.games-carousel .prev');
-  const nextBtn = document.querySelector('.games-carousel .next');
-
-  let currentIndex = 0;
-
-  function updateVisibleCarouselItems(index) {
-    items.forEach((item, i) => {
-      const gifs = item.querySelectorAll("img.gif-img");
-      if (i === index) {
-        gifs.forEach(img => {
-          img.style.display = "block"; // activa los gifs visibles
-          if (img.dataset.src && !img.src) {
-            img.src = img.dataset.src; // lazy-load si aún no se había cargado
-          }
-        });
-      } else {
-        gifs.forEach(img => {
-          img.style.display = "none"; // pausa los demás
-        });
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target); // Stop observing once it's visible
       }
     });
-  }
+  }, observerOptions);
 
-  function updateCarousel() {
-    const offset = -(currentIndex * 100);
-    track.style.transform = `translateX(${offset}%)`;
-    updateVisibleCarouselItems(currentIndex);
-  }
+  fadeElements.forEach(el => observer.observe(el));
 
-  nextBtn.addEventListener('click', () => {
-    currentIndex++;
-    if (currentIndex >= items.length) {
-      currentIndex = 0; // vuelve al inicio
-    }
-    updateCarousel();
+  // Video Modal Logic
+  const modal = document.getElementById('videoModal');
+  const videoBtns = document.querySelectorAll('.play-video');
+  const closeModalBtn = document.querySelector('.close-modal');
+  const videoContainer = document.getElementById('videoContainer');
+
+  videoBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const videoId = btn.getAttribute('data-video');
+      if (videoId) {
+        // Embed the YouTube iframe dynamically when opened to save initial load time
+        videoContainer.innerHTML = `<iframe 
+          src="https://www.youtube.com/embed/${videoId}" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>`;
+        modal.classList.add('active');
+      }
+    });
   });
 
-  prevBtn.addEventListener('click', () => {
-    currentIndex--;
-    if (currentIndex < 0) {
-      currentIndex = items.length - 1; // vuelve al final
+  const closeModal = () => {
+    modal.classList.remove('active');
+    // Remove the iframe to stop video playback
+    videoContainer.innerHTML = '';
+  };
+
+  closeModalBtn.addEventListener('click', closeModal);
+
+  // Close modal when clicking outside the content
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
     }
-    updateCarousel();
   });
 
-  // al cargar, muestra solo la primera slide
-  updateVisibleCarouselItems(currentIndex);
+  // Active Nav Link on Scroll
+  const sections = document.querySelectorAll('section, header');
+  const navItems = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.clientHeight;
+      if (scrollY >= (sectionTop - sectionHeight / 3)) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navItems.forEach(item => {
+      item.classList.remove('active');
+      if (item.getAttribute('href') === `#${current}`) {
+        item.classList.add('active');
+      }
+    });
+  });
+
+  // Slider Logic
+  const sliders = document.querySelectorAll('.slider');
+  sliders.forEach(slider => {
+    const slides = slider.querySelectorAll('.slide');
+    const btnPrev = slider.querySelector('.prev');
+    const btnNext = slider.querySelector('.next');
+    let currentSlide = 0;
+
+    const updateSlider = () => {
+      slides.forEach((slide, index) => {
+        slide.classList.remove('active');
+        if (index === currentSlide) {
+          slide.classList.add('active');
+        }
+      });
+    };
+
+    if (btnNext) {
+      btnNext.addEventListener('click', () => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateSlider();
+      });
+    }
+
+    if (btnPrev) {
+      btnPrev.addEventListener('click', () => {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        updateSlider();
+      });
+    }
+  });
 });
